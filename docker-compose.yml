@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:10
+    container_name: "hack-u-database"
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: hacku
+      POSTGRES_PASSWORD: hacku2022
+      POSTGRES_DB: hack-u-2022
+    volumes:
+      - ./db/psgl:/var/lib/postgresql/data
+  hack-u-backend:
+    build: .
+    container_name: 'hack-u-backend'
+    ports:
+      - 8099:8099
+    volumes:
+      - ./:/usr/src/backend/
+    tty: true

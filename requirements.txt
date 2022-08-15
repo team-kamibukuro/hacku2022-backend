@@ -3,3 +3,4 @@ pydantic
 sanic
 aioredis
 sqlalchemy
+aiomysql

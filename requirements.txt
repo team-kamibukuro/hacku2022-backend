@@ -2,3 +2,4 @@
 pydantic
 sanic
 aioredis
+sqlalchemy

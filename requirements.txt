@@ -2,3 +2,5 @@
 pydantic
 sanic
 aioredis
+sqlalchemy
+asyncpg

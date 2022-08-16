@@ -27,6 +27,10 @@ async def login(request):
 async def createRoom(request):
     return await RoomService.createRoom(request)
 
+@app.get("/room")
+async def getRoom(request):
+    return await RoomService.getRoom(request)
+
 if __name__ == '__main__':
 
     subprocess.call(["sh", "./db/db.sh"], shell=False)

@@ -33,3 +33,27 @@ class RoomService:
             "Authorization": authorization
         })
 
+
+    async def getRoom(self):
+
+        # for x in dir():
+        #     print(x)
+
+        authorization = self.headers.get('Authorization')
+
+        verifyTokenResult = verifyToken(authorization)
+
+        if verifyTokenResult['status'] != 200:
+            return response.json(verifyTokenResult)
+
+
+        roomModel = await RoomRepository.create(self.json['roomName'])
+
+        try:
+            res = roomModel.scalars().first().asCreateDict()
+            return response.json(res, headers={
+                 "Authorization": authorization
+            })
+        except Exception:
+            return response.json({"status": 400, "message": "ルーム名が間違っています。"})
+

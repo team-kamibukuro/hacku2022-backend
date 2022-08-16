@@ -14,3 +14,11 @@ class RoomRepository():
         async with async_session() as session:
             session.add(room)
             await session.commit()
+
+    async def selectRoomName(roomName):
+        async with async_session() as session:
+            q = select(Room).where(Room.roomName == roomName)
+
+            roomModel = await (session.execute(q))
+
+            return roomModel

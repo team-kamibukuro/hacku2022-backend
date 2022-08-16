@@ -4,3 +4,5 @@ sanic
 aioredis
 sqlalchemy
 asyncpg
+PyJWT
+python-dotenv

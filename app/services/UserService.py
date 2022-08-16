@@ -16,8 +16,8 @@ class UserService:
 
         await UserRepository.save(user)
 
-        # async with async_session() as session:
-        #     session.add(user)
-        #     await session.commit()
-
-        return response.json({"name": "ok"})
+        return response.json({
+              "status": 200,
+              "userId": user.id,
+              "userName": user.usersName
+            })

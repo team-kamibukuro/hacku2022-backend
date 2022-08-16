@@ -37,9 +37,13 @@ async def hello_world(request):
     return response.json({"massage": "Hello World !!"})
 
 
-@app.post("/siginup")
-async def siginup(request):
-    return await UserService.userSiginup(request)
+@app.post("/signup")
+async def signup(request):
+    return await UserService.userSignup(request)
+
+@app.post("/login")
+async def login(request):
+    return await UserService.userLogin(request)
 
 if __name__ == '__main__':
 

@@ -21,7 +21,7 @@
 
 #### パス
 
-`/siginup`
+`/signup`
 
 
 

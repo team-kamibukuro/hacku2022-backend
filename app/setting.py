@@ -1,13 +1,20 @@
 from sqlalchemy.orm import *
-from sqlalchemy import *
+import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.schema import Column
-from sqlalchemy.types import Integer, String, DateTime
-from datetime import datetime
-import sys
+from dotenv import load_dotenv
 
-bind = create_async_engine("postgresql+asyncpg://hacku:hacku2022@hack-u-database:5432/hack-u-2022", echo=True)
+load_dotenv(verbose=True)
+
+dbConnectUrl = "postgresql+asyncpg://{}:{}@{}:5432/{}".format(
+        os.environ.get("DB_USER_NAME"),
+        os.environ.get("DB_PASSWORD"),
+        os.environ.get("DB_HOST"),
+        os.environ.get("DB_NAME")
+)
+
+print(dbConnectUrl)
+bind = create_async_engine(dbConnectUrl, echo=True)
 
 
 
@@ -18,6 +25,7 @@ async_session = scoped_session(
         autoflush=False,
         bind=bind,
         class_=AsyncSession,
+        expire_on_commit=False
     )
 )
 

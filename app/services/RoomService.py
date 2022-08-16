@@ -19,13 +19,23 @@ class RoomService:
 
         verifyTokenResult = verifyToken(authorization)
 
+
+
         if verifyTokenResult['status'] != 200:
-            return response.json(verifyTokenResult)
+            return response.json(verifyTokenResult, status=400)
+
+
+        if await RoomRepository.checkRoom(self.json['roomName']):
+            return response.json({
+                "status": 400,
+                "message": "既に存在しているルーム名です。"
+            }, status=400)
 
         room = Room(
             roomName=self.json['roomName'],
             masterUserId=self.json['masterUserId'],
         )
+
 
         await RoomRepository.create(room)
 
@@ -44,10 +54,12 @@ class RoomService:
         verifyTokenResult = verifyToken(authorization)
 
         if verifyTokenResult['status'] != 200:
-            return response.json(verifyTokenResult)
+            return response.json(verifyTokenResult, status=400)
 
 
-        roomModel = await RoomRepository.create(self.json['roomName'])
+        print(self.body)
+
+        roomModel = await RoomRepository.selectRoomName(self.json['roomName'])
 
         try:
             res = roomModel.scalars().first().asCreateDict()
@@ -55,5 +67,5 @@ class RoomService:
                  "Authorization": authorization
             })
         except Exception:
-            return response.json({"status": 400, "message": "ルーム名が間違っています。"})
+            return response.json({"status": 400, "message": "ルーム名が間違っています。"}, status=400)
 

@@ -18,7 +18,7 @@ class UserService:
             usersPassword=self.json['userPassword'])
 
         if await UserRepository.checkEmail(user.usersEmail):
-            return response.json({"status": 400, "message": "既に存在しているメールアドレスです。"})
+            return response.json({"status": 400, "message": "既に存在しているメールアドレスです。"}, status=400)
 
         await UserRepository.save(user)
 
@@ -39,7 +39,7 @@ class UserService:
                  "Authorization": createToken(res['userId'], res['userName'])
             })
         except Exception:
-            return response.json({"status": 400, "message": "メールアドレスまたはパスワードが間違っています。"})
+            return response.json({"status": 400, "message": "メールアドレスまたはパスワードが間違っています。"}, status=400)
 
 
 

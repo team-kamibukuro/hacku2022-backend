@@ -22,10 +22,10 @@
 
 #### パス
 
-`/room`
+`/room/get`
 
 #### メソッド
-- GET
+- POST
   - json (Req/Res)
 
 #### リクエストヘッダー

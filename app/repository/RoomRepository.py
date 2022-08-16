@@ -15,6 +15,13 @@ class RoomRepository():
             session.add(room)
             await session.commit()
 
+    async def checkRoom(roomName):
+        async with async_session() as session:
+            q = select(Room).where(Room.roomName == roomName)
+            roomCount = await (session.execute(q))
+
+            return False if int(len(roomCount.all())) == 0 else True
+
     async def selectRoomName(roomName):
         async with async_session() as session:
             q = select(Room).where(Room.roomName == roomName)

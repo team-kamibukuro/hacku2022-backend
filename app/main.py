@@ -27,7 +27,7 @@ async def login(request):
 async def createRoom(request):
     return await RoomService.createRoom(request)
 
-@app.get("/room")
+@app.post("/room/get")
 async def getRoom(request):
     return await RoomService.getRoom(request)
 

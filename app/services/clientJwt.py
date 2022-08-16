@@ -19,6 +19,8 @@ def createToken(userId, userName):
 
     dateOfExpirydatetime = str(datetime.datetime.now() + datetime.timedelta(hours=6))
 
+
+
     token = jwt.encode(
         headers={"exp": dateOfExpirydatetime},
         payload=payload, key=key, algorithm=algorithm)

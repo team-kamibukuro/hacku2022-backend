@@ -39,7 +39,11 @@ async def hello_world(request):
 
 @app.post("/siginup")
 async def siginup(request):
-    return await UserService.userSiginup(request)
+    return await UserService.userSignup(request)
+
+@app.post("/login")
+async def login(request):
+    return await UserService.userLogin(request)
 
 if __name__ == '__main__':
 

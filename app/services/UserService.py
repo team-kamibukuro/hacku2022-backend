@@ -1,6 +1,7 @@
 from sanic import Sanic
 from sanic import response
 from models.User import User
+from clientJwt import *
 
 from repository.UserRepository import *
 from setting import async_session
@@ -8,7 +9,7 @@ from setting import async_session
 
 class UserService:
 
-    async def userSiginup(self):
+    async def userSignup(self):
         user = User.User(
             usersName=self.json['userName'],
             usersEmail=self.json['userEmail'],
@@ -20,4 +21,9 @@ class UserService:
               "status": 200,
               "userId": user.id,
               "userName": user.usersName
-            })
+            }, headers={
+            "Authorization": createToken(user.id, user.usersName)
+        })
+
+    # async def userLogin(self):
+

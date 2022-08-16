@@ -1,7 +1,7 @@
 from sanic import Sanic
 from sanic import response
 from models.User import User
-from clientJwt import *
+from .clientJwt import *
 import json
 from sqlalchemy.ext.serializer import loads, dumps
 

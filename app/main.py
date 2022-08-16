@@ -1,31 +1,9 @@
-import sys
-
-sys.path.append('./models')
-sys.path.append('./repository')
-sys.path.append('./services')
-print(sys.path)
-
-
 import subprocess
 
 
-from sanic import Sanic
-from sanic import response
+
 from services.UserService import *
-
-from sqlalchemy.ext.declarative import declarative_base
-
-import binascii
-import uuid
-import json
-
-from sanic.response import text
-
-from sanic.log import logger
-
-
-from sanic.server.websockets.impl import WebsocketImplProtocol as Websocket
-
+from services.RoomService import *
 
 
 
@@ -44,6 +22,10 @@ async def signup(request):
 @app.post("/login")
 async def login(request):
     return await UserService.userLogin(request)
+
+@app.post("/room")
+async def createRoom(request):
+    return await RoomService.createRoom(request)
 
 if __name__ == '__main__':
 

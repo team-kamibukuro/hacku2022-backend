@@ -27,13 +27,15 @@ def createToken(userId, userName):
 
 def verifyToken(token):
 
+
+
     try:
         jwt.decode(token, key=key, algorithms=["HS256"])
         return {"status": 200, "message": ""}
     except jwt.ExpiredSignatureError:
-        return {"status": 201, "message": "トークンの有効期限が切れています。"}
+        return {"status": 401, "message": "トークンの有効期限が切れています。"}
     except Exception:
-        return {"status": 202, "message": "トークンの検証に失敗しました。"}
+        return {"status": 402, "message": "トークンの検証に失敗しました。"}
 
 
 

@@ -22,10 +22,10 @@
 
 #### パス
 
-`/room`
+`/room/get`
 
 #### メソッド
-- GET
+- POST
   - json (Req/Res)
 
 #### リクエストヘッダー
@@ -75,6 +75,14 @@
   "roomId": "UUID-001",
   "roomName": "パオーン・プログラミングクラブ",
   "masterUserId": "user-0001"
+}
+```
+
+#### エラーレスポンスサンプル
+```JSON
+{
+  "status": 400, 
+  "message": "ルーム名が間違っています。"
 }
 ```
 

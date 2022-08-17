@@ -62,12 +62,12 @@ class WsService:
                 elif data_json["event"] == "UPDATE_CODE":
                     manager.set_full_text(data_json["code"])
                     await manager.broadcast_except_me(json.dumps(
-                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "heart": data_json["heart"]}), ws)
+                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
 
 
                 elif data_json["event"] == "UPDATE_HEART":
                     await manager.broadcast_except_me(json.dumps(
-                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
+                        {"event": "UPDATE_HEART", "playerId": data_json["playerId"], "heart": data_json["heart"]}), ws)
 
 
                 elif data_json["event"] == "FINISHED":

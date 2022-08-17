@@ -1,5 +1,6 @@
 import subprocess
-
+from sanic_cors.extension import CORS
+from sanic_ext import Extend
 
 
 from services.UserService import *
@@ -12,6 +13,7 @@ from services.ws.WsService import *
 
 app = Sanic("HackU2022-backend")
 app.config.CORS_ORIGINS = "http://localhost:3000"
+Extend(app)
 
 
 @app.get("/")

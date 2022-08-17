@@ -44,7 +44,7 @@ class WsService:
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
                     await RoomRepository.checkMaterId(roomId)
-                    if connectCount >= 2:
+                    if connectCount >= 4:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
 

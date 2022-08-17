@@ -59,8 +59,17 @@ class RoomService:
 
         try:
             res = roomModel.scalars().first().asCreateDict()
-            return response.json(res, headers={
-                "Authorization": authorization
-            })
+
+            if int(len(managers[res['roomId']].active_connections)) >= 4:
+                return response.json({"status": 400, "message": "ルームが満席です。"},
+                    headers={
+                        "Authorization": authorization
+                    },
+                    status=400
+                )
+            else:
+                return response.json(res, headers={
+                    "Authorization": authorization
+                })
         except Exception:
             return response.json({"status": 400, "message": "ルーム名が間違っています。"}, status=400)

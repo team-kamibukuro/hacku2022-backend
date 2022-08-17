@@ -18,10 +18,10 @@ class ConnectionManager:
         # await websocket.accept()
         await websocket.send(json.dumps({"event": "CONNECT_SUCCESS"}))
 
-    async def setName(self, request, websocket, name):
+    async def setName(self, request, websocket, roomId, name):
         # await websocket.accept()
 
-        self.active_connections.append({"ws": websocket, "userName": name})
+        self.active_connections.append({"ws": websocket,"roomId": roomId ,"userName": name})
 
         print(len(self.active_connections))
         await websocket.send(json.dumps({"event": "Good_response"}))

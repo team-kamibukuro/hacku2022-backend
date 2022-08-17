@@ -28,22 +28,7 @@ class WsService:
                 data_json = json.loads(data)
 
                 if data_json["event"] == "CONNECT_SUCCESS":
-                    await manager.setName(request, ws, data_json["playerId"])
-
-                if data_json["event"] == "chat":
-                    await manager.broadcast(json.dumps(
-                        {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
-                         "type": "chat", "data": data_json["data"]}))
-
-                elif data_json["event"] == "cursormove":
-                    await manager.broadcast_except_me(json.dumps(
-                        {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
-                         "type": "cursormove", "data": data_json["data"]}), ws)
-
-                elif data_json["event"] == "selection":
-                    await manager.broadcast_except_me(json.dumps(
-                        {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
-                         "type": "selection", "data": data_json["data"]}), ws)
+                    await manager.setName(request, ws, data_json["playerId"], data_json["name"])
 
                 elif data_json["event"] == "attack":
                     if data_json["attack_type"] == "injection":
@@ -53,11 +38,10 @@ class WsService:
                         {"name": name, "key": manager.get_key(request),
                          "type": "edit", "data": data_json["data"]}), ws)
 
-                elif data_json["event"] == "edit":
-                    manager.set_full_text(data_json["data"]["full_text"])
+                elif data_json["event"] == "UPDATE_CODE":
+                    manager.set_full_text(data_json["code"])
                     await manager.broadcast_except_me(json.dumps(
-                        {"name": name, "key": manager.get_key(request),
-                         "type": "edit", "data": data_json["data"]}), ws)
+                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
 
         except ws.exceptions.ConnectionClosed:
             manager.disconnect(ws)

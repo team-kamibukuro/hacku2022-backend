@@ -4,11 +4,15 @@ import subprocess
 
 from services.UserService import *
 from services.RoomService import *
+from services.ws.WsService import *
+
 
 
 
 
 app = Sanic("HackU2022-backend")
+app.config.CORS_ORIGINS = "http://localhost:3000"
+
 
 @app.get("/")
 async def hello_world(request):
@@ -30,6 +34,11 @@ async def createRoom(request):
 @app.post("/room/get")
 async def getRoom(request):
     return await RoomService.getRoom(request)
+
+
+@app.websocket("/play/<room_id>")
+async def playGame(request,  ws, room_id):
+    return await WsService.playGame(request,  ws, room_id)
 
 if __name__ == '__main__':
 

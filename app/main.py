@@ -9,7 +9,10 @@ from services.ws.WsService import *
 
 
 
+
 app = Sanic("HackU2022-backend")
+app.config.CORS_ORIGINS = "http://localhost:3000"
+
 
 @app.get("/")
 async def hello_world(request):

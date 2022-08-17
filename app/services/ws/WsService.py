@@ -3,6 +3,7 @@ from sanic import response
 from models.Room import Room
 from ..clientJwt import *
 from repository.QuestionRepository import *
+from repository.RoomRepository import *
 import json
 import binascii
 from models.Question import *
@@ -19,6 +20,10 @@ name = {}
 class WsService:
 
 
+
+
+
+
     async def playGame(request,  ws, roomId):
         manager = managers[roomId]
         await manager.connect(request, ws)
@@ -30,11 +35,34 @@ class WsService:
                 data = await ws.recv()
                 data_json = json.loads(data)
 
-                if data_json["event"] == "CONNECT_SUCCESS":
-                    connectCount = await manager.setName(request, ws, data_json["playerId"], data_json["name"])
-                    if connectCount >= 4:
 
+                if data_json["event"] == "CONNECT_SUCCESS":
+
+                    masterUserId = await RoomRepository.checkMaterId(roomId)
+                    isMaster = True if data_json["playerId"] == masterUserId else False
+
+
+                    connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
+                    await RoomRepository.checkMaterId(roomId)
+                    if connectCount >= 2:
                         questionModel = await QuestionRepository.choiceQuestion(request)
+
+
+
+                        # await manager.getPlayers()
+
+
+                        await manager.broadcast_except(json.dumps(
+                            {
+                                "event": "READY",
+                                "question": {
+                                    "id": questionModel.id,
+                                    "name": questionModel.questionsTitle,
+                                    "context": questionModel.questionsContent
+                                },
+                                "players": await manager.getPlayers()
+                            }
+                        ), ws)
 
 
 

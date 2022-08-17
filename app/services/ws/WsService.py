@@ -2,9 +2,10 @@ from sanic import Sanic
 from sanic import response
 from models.Room import Room
 from ..clientJwt import *
-from repository.RoomRepository import *
+from repository.QuestionRepository import *
 import json
 import binascii
+from models.Question import *
 
 from sanic import response
 from sqlalchemy.ext.serializer import loads, dumps
@@ -22,13 +23,21 @@ class WsService:
         manager = managers[roomId]
         await manager.connect(request, ws)
 
+
+
         try:
             while True:
                 data = await ws.recv()
                 data_json = json.loads(data)
 
                 if data_json["event"] == "CONNECT_SUCCESS":
-                    await manager.setName(request, ws, data_json["playerId"], data_json["name"])
+                    connectCount = await manager.setName(request, ws, data_json["playerId"], data_json["name"])
+                    if connectCount >= 4:
+
+                        questionModel = await QuestionRepository.choiceQuestion(request)
+
+
+
 
                 elif data_json["event"] == "attack":
                     if data_json["attack_type"] == "injection":

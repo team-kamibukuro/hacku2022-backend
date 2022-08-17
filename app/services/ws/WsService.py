@@ -52,7 +52,7 @@ class WsService:
                         # await manager.getPlayers()
 
 
-                        await manager.broadcast_except(json.dumps(
+                        await manager.broadcast(json.dumps(
                             {
                                 "event": "READY",
                                 "question": {
@@ -61,8 +61,7 @@ class WsService:
                                     "context": questionModel.questionsContent
                                 },
                                 "players": await manager.getPlayers()
-                            }
-                        ), ws)
+                            }, ensure_ascii=False))
 
 
 

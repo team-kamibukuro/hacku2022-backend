@@ -1,4 +1,5 @@
 import json
+import binascii
 
 
 
@@ -34,7 +35,6 @@ class ConnectionManager:
         for tmpActiveConnection in self.active_connections:
 
             tmp = tmpActiveConnection.copy()
-
 
             tmp.pop('ws')
             result.append(tmp)

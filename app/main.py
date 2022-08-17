@@ -4,6 +4,7 @@ import subprocess
 
 from services.UserService import *
 from services.RoomService import *
+from services.ws.WsService import *
 
 
 
@@ -30,6 +31,11 @@ async def createRoom(request):
 @app.post("/room/get")
 async def getRoom(request):
     return await RoomService.getRoom(request)
+
+
+@app.websocket("/play/<room_id>")
+async def playGame(request,  ws, room_id):
+    return await WsService.playGame(request,  ws, room_id)
 
 if __name__ == '__main__':
 

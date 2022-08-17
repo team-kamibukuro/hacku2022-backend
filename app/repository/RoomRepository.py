@@ -22,6 +22,13 @@ class RoomRepository():
 
             return False if int(len(roomCount.all())) == 0 else True
 
+    async def checkRoomId(roomId):
+        async with async_session() as session:
+            q = select(Room).where(Room.roomId == roomId)
+            roomCount = await (session.execute(q))
+
+            return False if int(len(roomCount.all())) == 0 else True
+
     async def selectRoomName(roomName):
         async with async_session() as session:
             q = select(Room).where(Room.roomName == roomName)

@@ -1,6 +1,8 @@
 import json
 
 
+
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections= []
@@ -12,13 +14,11 @@ class ConnectionManager:
     def set_full_text(self, text: str):
         self.full_text = text
 
-    async def connect(self, request, websocket, name):
+    async def connect(self, request, websocket):
         # await websocket.accept()
 
         self.active_connections.append(websocket)
-        await self.broadcast(json.dumps(
-            {"name": name, "key": self.get_key(request), "type": "connect",
-             "data": self.full_text}))
+        await self.broadcast(json.dumps({"event": "CONNECT_SUCCESS"}))
 
     def disconnect(self, websocket):
         self.active_connections.remove(websocket)

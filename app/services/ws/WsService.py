@@ -71,9 +71,8 @@ class WsService:
 
 
                 elif data_json["event"] == "FINISHED":
-                    manager.set_full_text(data_json["code"])
                     await manager.broadcast_except_me(json.dumps(
-                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
+                        {"event": "FINISHED", "playerId": data_json["playerId"]}), ws)
 
 
 

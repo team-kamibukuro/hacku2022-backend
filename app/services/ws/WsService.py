@@ -27,22 +27,25 @@ class WsService:
                 data = await ws.recv()
                 data_json = json.loads(data)
 
-                if data_json["type"] == "chat":
+                if data_json["event"] == "CONNECT_SUCCESS":
+                    await manager.setName(request, ws, data_json["playerId"])
+
+                if data_json["event"] == "chat":
                     await manager.broadcast(json.dumps(
                         {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
                          "type": "chat", "data": data_json["data"]}))
 
-                elif data_json["type"] == "cursormove":
+                elif data_json["event"] == "cursormove":
                     await manager.broadcast_except_me(json.dumps(
                         {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
                          "type": "cursormove", "data": data_json["data"]}), ws)
 
-                elif data_json["type"] == "selection":
+                elif data_json["event"] == "selection":
                     await manager.broadcast_except_me(json.dumps(
                         {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
                          "type": "selection", "data": data_json["data"]}), ws)
 
-                elif data_json["type"] == "attack":
+                elif data_json["event"] == "attack":
                     if data_json["attack_type"] == "injection":
                         manager.set_full_text(data_json["data"]["full_text"].replace(' ', ''))
                     # manager.set_full_text(data_json["data"]["full_text"])
@@ -50,7 +53,7 @@ class WsService:
                         {"name": name, "key": manager.get_key(request),
                          "type": "edit", "data": data_json["data"]}), ws)
 
-                elif data_json["type"] == "edit":
+                elif data_json["event"] == "edit":
                     manager.set_full_text(data_json["data"]["full_text"])
                     await manager.broadcast_except_me(json.dumps(
                         {"name": name, "key": manager.get_key(request),

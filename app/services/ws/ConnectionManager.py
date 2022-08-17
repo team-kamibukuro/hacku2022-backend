@@ -16,9 +16,15 @@ class ConnectionManager:
 
     async def connect(self, request, websocket):
         # await websocket.accept()
+        await websocket.send(json.dumps({"event": "CONNECT_SUCCESS"}))
 
-        self.active_connections.append(websocket)
-        await self.broadcast(json.dumps({"event": "CONNECT_SUCCESS"}))
+    async def setName(self, request, websocket, name):
+        # await websocket.accept()
+
+        self.active_connections.append({"ws": websocket, "userName": name})
+
+        print(len(self.active_connections))
+        await websocket.send(json.dumps({"event": "Good_response"}))
 
     def disconnect(self, websocket):
         self.active_connections.remove(websocket)
@@ -28,12 +34,12 @@ class ConnectionManager:
 
     async def broadcast(self, message: str):
         for connection in self.active_connections:
-            await connection.send(message)
+            await connection["ws"].send(message)
 
     async def broadcast_except_me(self, message: str, websocket):
         for connection in self.active_connections:
-            if connection != websocket:
-                await connection.send(message)
+            if connection["ws"] != websocket:
+                await connection["ws"].send(message)
 
     def get_key(self, request):
         return request.headers['sec-websocket-key']

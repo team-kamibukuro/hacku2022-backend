@@ -48,10 +48,6 @@ class WsService:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
 
-
-                        # await manager.getPlayers()
-
-
                         await manager.broadcast(json.dumps(
                             {
                                 "event": "READY",
@@ -63,21 +59,24 @@ class WsService:
                                 "players": await manager.getPlayers()
                             }, ensure_ascii=False))
 
-
-
-
-                elif data_json["event"] == "attack":
-                    if data_json["attack_type"] == "injection":
-                        manager.set_full_text(data_json["data"]["full_text"].replace(' ', ''))
-                    # manager.set_full_text(data_json["data"]["full_text"])
-                    await manager.broadcast_except_me(json.dumps(
-                        {"name": name, "key": manager.get_key(request),
-                         "type": "edit", "data": data_json["data"]}), ws)
-
                 elif data_json["event"] == "UPDATE_CODE":
                     manager.set_full_text(data_json["code"])
                     await manager.broadcast_except_me(json.dumps(
                         {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
+
+
+                elif data_json["event"] == "UPDATE_HEART":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "UPDATE_HEART", "playerId": data_json["playerId"], "heart": data_json["heart"]}), ws)
+
+
+                elif data_json["event"] == "FINISHED":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "FINISHED", "playerId": data_json["playerId"]}), ws)
+
+
+
+
 
         except ws.exceptions.ConnectionClosed:
             manager.disconnect(ws)

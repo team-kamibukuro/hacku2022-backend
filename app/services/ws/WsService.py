@@ -5,6 +5,7 @@ from ..clientJwt import *
 from repository.QuestionRepository import *
 from repository.RoomRepository import *
 import json
+import random
 import binascii
 from models.Question import *
 
@@ -15,6 +16,25 @@ from setting import async_session
 managers = {}
 is_public = {}
 name = {}
+
+commentLanguage = {
+    "c": "// ",
+    "charp": "// ",
+    "cpp": "// ",
+    "go": "// ",
+    "java": "// ",
+    "javascript": "// ",
+    "php": "// ",
+    "perl": "# ",
+    "python": "# ",
+    "r": "# ",
+    "ruby": "# ",
+    "rust": "// ",
+    "scala": "// ",
+    "swift": "// ",
+    "typescript": "// ",
+
+}
 
 
 class WsService:
@@ -43,22 +63,41 @@ class WsService:
 
                 elif data_json["event"] == "ATTACK":
 
-                    code = ""
+                    code = """
+def is_prime(n):
+    if n < 2:
+        return False
+    for k in range(2, int(n/2)+1):
+        if n % k == 0:
+            return False
+    return True
+                            """
+
+                    comment = commentLanguage[data_json["language"]]
 
                     if data_json["attackType"] == "INDENT_INJECTION":
-                        print("indent")
+                        code = data_json["code"]
 
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
-                        print("injection")
+                        # code = data_json["code"]
+                        startChar = random.randint(0, len(code))
+                        index = code.find("\n", startChar, len(code))
+                        if index == -1:
+                            code = comment + code
+                        else:
+                            index = index + 3
+                            code = code[:index] + comment + code[index:]
+
 
                     elif data_json["attackType"] == "TBC_POISONING":
-                        print("tbc")
+                        code = data_json["code"]
 
                     await manager.broadcast_except_me(json.dumps(
                         {
                             "event": "ATTACK",
                             "attackType": data_json["attackType"],
                             "playerId": data_json["playerId"],
+                            "language": data_json["language"],
                             "name": data_json["name"],
                             "code": code
                         }, ensure_ascii=False), ws)

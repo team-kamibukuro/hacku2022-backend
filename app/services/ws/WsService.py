@@ -42,14 +42,26 @@ class WsService:
 
 
                 elif data_json["event"] == "ATTACK":
-                    if data_json["event"] == "INDENT_INJECTION":
+
+                    code = ""
+
+                    if data_json["attackType"] == "INDENT_INJECTION":
                         print("indent")
 
-                    elif data_json["event"] == "COMMENTOUT_INJECTION":
+                    elif data_json["attackType"] == "COMMENTOUT_INJECTION":
                         print("injection")
 
-                    elif data_json["event"] == "TBC_POISONING":
+                    elif data_json["attackType"] == "TBC_POISONING":
                         print("tbc")
+
+                    await manager.broadcast_except_me(json.dumps(
+                        {
+                            "event": "ATTACK",
+                            "attackType": data_json["attackType"],
+                            "playerId": data_json["playerId"],
+                            "name": data_json["name"],
+                            "code": code
+                        }, ensure_ascii=False), ws)
 
 
                 elif data_json["event"] == "CONNECT_SUCCESS":

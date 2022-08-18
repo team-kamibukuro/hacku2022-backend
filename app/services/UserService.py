@@ -23,6 +23,7 @@ class UserService:
         await UserRepository.save(user)
 
         return response.json(user.asLoginDict(), headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": createToken(user.id, user.usersName)
         })
 
@@ -36,6 +37,7 @@ class UserService:
         try:
             res = userMpdel.scalars().first().asLoginDict()
             return response.json(res, headers={
+                "Access-Control-Expose-Headers": "*, Authorization",
                  "Authorization": createToken(res['userId'], res['userName'])
             })
         except Exception:

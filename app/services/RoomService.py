@@ -40,6 +40,7 @@ class RoomService:
         await RoomRepository.create(room)
 
         return response.json(room.asDict(), headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })
 
@@ -63,6 +64,7 @@ class RoomService:
             if int(len(managers[res['roomId']].active_connections)) >= 4:
                 return response.json({"status": 400, "message": "ルームが満席です。"},
                     headers={
+                        "Access-Control-Expose-Headers": "*, Authorization",
                         "Authorization": authorization
                     },
                     status=400

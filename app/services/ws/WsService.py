@@ -36,7 +36,35 @@ class WsService:
                 data_json = json.loads(data)
 
 
-                if data_json["event"] == "CONNECT_SUCCESS":
+                if data_json["event"] == "UPDATE_CODE":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
+
+
+                elif data_json["event"] == "ATTACK":
+
+                    code = ""
+
+                    if data_json["attackType"] == "INDENT_INJECTION":
+                        print("indent")
+
+                    elif data_json["attackType"] == "COMMENTOUT_INJECTION":
+                        print("injection")
+
+                    elif data_json["attackType"] == "TBC_POISONING":
+                        print("tbc")
+
+                    await manager.broadcast_except_me(json.dumps(
+                        {
+                            "event": "ATTACK",
+                            "attackType": data_json["attackType"],
+                            "playerId": data_json["playerId"],
+                            "name": data_json["name"],
+                            "code": code
+                        }, ensure_ascii=False), ws)
+
+
+                elif data_json["event"] == "CONNECT_SUCCESS":
 
                     masterUserId = await RoomRepository.checkMaterId(roomId)
                     isMaster = True if data_json["playerId"] == masterUserId else False
@@ -58,11 +86,6 @@ class WsService:
                                 },
                                 "players": await manager.getPlayers()
                             }, ensure_ascii=False))
-
-                elif data_json["event"] == "UPDATE_CODE":
-                    manager.set_full_text(data_json["code"])
-                    await manager.broadcast_except_me(json.dumps(
-                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
 
 
                 elif data_json["event"] == "UPDATE_HEART":

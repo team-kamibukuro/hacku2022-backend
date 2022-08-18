@@ -36,7 +36,23 @@ class WsService:
                 data_json = json.loads(data)
 
 
-                if data_json["event"] == "CONNECT_SUCCESS":
+                if data_json["event"] == "UPDATE_CODE":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
+
+
+                elif data_json["event"] == "ATTACK":
+                    if data_json["event"] == "INDENT_INJECTION":
+                        print("indent")
+
+                    elif data_json["event"] == "COMMENTOUT_INJECTION":
+                        print("injection")
+
+                    elif data_json["event"] == "TBC_POISONING":
+                        print("tbc")
+
+
+                elif data_json["event"] == "CONNECT_SUCCESS":
 
                     masterUserId = await RoomRepository.checkMaterId(roomId)
                     isMaster = True if data_json["playerId"] == masterUserId else False
@@ -58,11 +74,6 @@ class WsService:
                                 },
                                 "players": await manager.getPlayers()
                             }, ensure_ascii=False))
-
-                elif data_json["event"] == "UPDATE_CODE":
-                    manager.set_full_text(data_json["code"])
-                    await manager.broadcast_except_me(json.dumps(
-                        {"event": "UPDATE_CODE", "playerId": data_json["playerId"], "code": data_json["code"]}), ws)
 
 
                 elif data_json["event"] == "UPDATE_HEART":

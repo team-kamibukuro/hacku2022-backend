@@ -63,23 +63,71 @@ class WsService:
 
                 elif data_json["event"] == "ATTACK":
 
-                    code = """
-def is_prime(n):
-    if n < 2:
-        return False
-    for k in range(2, int(n/2)+1):
-        if n % k == 0:
-            return False
-    return True
-                            """
+#                     code = """
+# def is_prime(n):
+#     if n < 2:
+#         return False
+#     for k in range(2, int(n/2)+1):
+#         if n % k == 0:
+#             return False
+#     return True
+#                             """
 
-                    comment = commentLanguage[data_json["language"]]
+
+
+
 
                     if data_json["attackType"] == "INDENT_INJECTION":
                         code = data_json["code"]
+                        codeLength = len(code)
+
+                        cursor = 0
+                        while cursor < codeLength:
+                            index = code.find("\n", cursor, codeLength)
+                            if index == -1:
+                                break
+                            cursor = index + 2
+                            while cursor < codeLength:
+                                if code[cursor] == ' ':
+                                    code = code[:cursor - 1] + code[cursor + 1:]
+                                    codeLength = len(code)
+                                else:
+                                    break
+
+                        codeLength = len(code)
+                        cursor = 0
+
+                        while cursor < codeLength:
+                            index = code.find("\n", cursor, codeLength)
+                            if index == -1:
+                                break
+                            cursor = index + 1
+                            randomNum = random.randint(2, 10)
+                            code = code[:cursor] + " "*randomNum + code[cursor:]
+                            codeLength = len(code)
+
+
+
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
+
+
+
+
+
+
+
 
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
-                        # code = data_json["code"]
+                        code = data_json["code"]
+                        comment = commentLanguage[data_json["language"]]
                         index = 0
                         for i in range(10):
                             startChar = random.randint(0, len(code))
@@ -97,15 +145,15 @@ def is_prime(n):
                     elif data_json["attackType"] == "TBC_POISONING":
                         code = data_json["code"]
 
-                    await manager.broadcast_except_me(json.dumps(
-                        {
-                            "event": "ATTACK",
-                            "attackType": data_json["attackType"],
-                            "playerId": data_json["playerId"],
-                            "language": data_json["language"],
-                            "name": data_json["name"],
-                            "code": code
-                        }, ensure_ascii=False), ws)
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
 
 
                 elif data_json["event"] == "CONNECT_SUCCESS":

@@ -9,3 +9,4 @@ python-dotenv
 sanic-cors
 sanic-ext
 requests
+mojimoji

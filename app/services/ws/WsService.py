@@ -7,6 +7,7 @@ from repository.RoomRepository import *
 import json
 import random
 import binascii
+import mojimoji
 from models.Question import *
 
 from sanic import response
@@ -63,15 +64,15 @@ class WsService:
 
                 elif data_json["event"] == "ATTACK":
 
-#                     code = """
-# def is_prime(n):
-#     if n < 2:
-#         return False
-#     for k in range(2, int(n/2)+1):
-#         if n % k == 0:
-#             return False
-#     return True
-#                             """
+                    code = """
+def is_prime(n):
+    if n < 2:
+        return False
+    for k in range(2, int(n/2)+1):
+        if n % k == 0:
+            return False
+    return True
+                            """
 
 
 
@@ -142,8 +143,35 @@ class WsService:
                             code = code[:index] + comment + code[index:]
 
 
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
+
+
+
+
                     elif data_json["attackType"] == "TBC_POISONING":
-                        code = data_json["code"]
+                        # code = data_json["code"]
+                        codeLength = len(code)
+
+
+
+                        for i in range(int(codeLength/100)):
+
+                            randomNum = random.randint(0, codeLength)
+                            excludedForwardChar = code[randomNum+1:randomNum]
+                            excludedBackChar = code[randomNum:randomNum+1]
+
+                            if excludedForwardChar != "\n" and excludedBackChar != "\n":
+                                code = code[:randomNum-1] + mojimoji.han_to_zen(code[randomNum]) + code[randomNum+1:]
+
+
 
                         await manager.broadcast_except_me(json.dumps(
                             {

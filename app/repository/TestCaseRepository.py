@@ -7,7 +7,7 @@ from models.Testcase import *
 class TestCaseRepository():
 
 
-    async def checkRoomId(questionId):
+    async def getTestCases(questionId):
         async with async_session() as session:
             q = select(Testcase).where(Testcase.questionsId == questionId)
             testCaseModel = await (session.execute(q))

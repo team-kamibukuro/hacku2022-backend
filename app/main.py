@@ -6,7 +6,7 @@ from sanic_ext import Extend
 from services.UserService import *
 from services.RoomService import *
 from services.ws.WsService import *
-
+from services.ConsoleService import *
 
 
 
@@ -37,6 +37,9 @@ async def createRoom(request):
 async def getRoom(request):
     return await RoomService.getRoom(request)
 
+@app.post("/console")
+async def executeConsole(request):
+    return await ConsoleService.getConsoleResult(request)
 
 @app.websocket("/play/<room_id>")
 async def playGame(request,  ws, room_id):

@@ -30,7 +30,6 @@ def createToken(userId, userName):
 def verifyToken(token):
 
 
-
     try:
         jwt.decode(token, key=key, algorithms=["HS256"])
         return {"status": 200, "message": ""}

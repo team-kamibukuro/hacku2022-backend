@@ -41,6 +41,12 @@ async def getRoom(request):
 async def executeConsole(request):
     return await ConsoleService.getConsoleResult(request)
 
+@app.post("/testcase")
+async def executeTestCase(request):
+    return await ConsoleService.getTestCaseResult(request)
+
+
+
 @app.websocket("/play/<room_id>")
 async def playGame(request,  ws, room_id):
     return await WsService.playGame(request,  ws, room_id)

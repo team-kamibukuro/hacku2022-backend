@@ -72,3 +72,26 @@ class ConsoleService:
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })
+
+    async def getTestCaseResult(self):
+
+        authorization = self.headers.get('Authorization')
+
+        code = """
+inputNum = input()
+for i in range(int(inputNum)):
+    if i % 2 == 0:
+        print(i)
+                """
+
+        verifyTokenResult = verifyToken(authorization)
+
+        if verifyTokenResult['status'] != 200:
+            return response.json(verifyTokenResult, status=400)
+
+        return response.json({
+
+        }, headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
+            "Authorization": authorization
+        })

@@ -40,6 +40,7 @@
 |------------|--------|------------|
 | code       | string | プログラミングコード |
 | questionId | string | 問題文ID      |
+| language | string | プログラミング言語  |
 
 
 
@@ -48,6 +49,7 @@
 ```JSON
 {
   "code": "print(\"hello worl\")",
+  "language": "python",
   "testId": "test-00001"
 }
 ```

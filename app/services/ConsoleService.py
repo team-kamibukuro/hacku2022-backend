@@ -1,8 +1,11 @@
 from sanic import Sanic
 from sanic import response
 import requests
+import time
 from models.User import User
 from .clientJwt import *
+from repository.TestCaseRepository import *
+from models.Testcase import *
 import json
 from sqlalchemy.ext.serializer import loads, dumps
 
@@ -68,6 +71,75 @@ class ConsoleService:
             "isError": isError,
             "programError": resDict["program_error"],
             "programOutput": resDict["program_output"]
+        }, headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
+            "Authorization": authorization
+        })
+
+    async def getTestCaseResult(self):
+
+        authorization = self.headers.get('Authorization')
+
+#         code = """
+# inputNum = input()
+# for i in range(int(inputNum)+1):
+#     if i % 2 == 0:
+#         print(i, end=' ')
+#                 """
+
+        verifyTokenResult = verifyToken(authorization)
+
+        if verifyTokenResult['status'] != 200:
+            return response.json(verifyTokenResult, status=400)
+
+        questionId = self.json["testId"]
+        code = self.json["code"]
+        compiler = compilers[self.json["language"]]
+
+        testCasesModel = await TestCaseRepository.getTestCases(questionId)
+
+        result = []
+        testCaseTotal = len(testCasesModel)
+        testCaseClearTotal = 0
+
+        for testCaseModel in testCasesModel:
+            res = requests.post("https://wandbox.org/api/compile.json",
+                                json={"code": code, "compiler": compiler, "stdin": testCaseModel.testcasesInput},
+                                headers={"Content-type": "application/json"})
+            resJson = res.json()
+
+            print(resJson)
+
+            isClearTestCase = False
+            isCompileError = False
+            compilerError = ""
+
+            if resJson["status"] == "0":
+                if resJson["program_output"].strip() == testCaseModel.testcasesOutput:
+                    testCaseClearTotal += 1
+                    isClearTestCase = True
+                    print("成功")
+            else:
+                isCompileError = True
+                compilerError = resJson["program_error"]
+
+            result.append({
+                "testCaseId": testCaseModel.id,
+                "isCompileError": isCompileError,
+                "compilerError": compilerError,
+                "isClearTestCase": isClearTestCase
+            })
+            time.sleep(0.3)
+
+        isClearTestCases = True if testCaseClearTotal == testCaseTotal else False
+
+        return response.json({
+            "status": 200,
+            "questionId": questionId,
+            "isClearTestCases": isClearTestCases,
+            "testCaseTotal": testCaseTotal,
+            "testCaseClearTotal": testCaseClearTotal,
+            "testCases": result
         }, headers={
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization

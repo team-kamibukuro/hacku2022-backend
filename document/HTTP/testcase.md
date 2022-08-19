@@ -40,6 +40,7 @@
 |------------|--------|------------|
 | code       | string | プログラミングコード |
 | questionId | string | 問題文ID      |
+| language | string | プログラミング言語  |
 
 
 
@@ -48,6 +49,7 @@
 ```JSON
 {
   "code": "print(\"hello worl\")",
+  "language": "python",
   "testId": "test-00001"
 }
 ```
@@ -66,7 +68,6 @@
 |--------------------|---------|-------------------|
 | status             | int     | レスポンスステータス        |
 | questionId         | string  | 問題ID              |
-| questionName       | string  | 問題名               |
 | isClearTestCases   | boolean | テストケースが全て成功したかどうか |
 | testCaseTotal      | int     | テストケースの合計         |
 | testCaseClearTotal | int     | テストケースが通った数       |
@@ -88,7 +89,6 @@
 {
   "status":200,
   "questionId": "q-0002",
-  "questionName": "暗号解読",
   "isClearTestCases": false,
   "testCaseTotal": 5,
   "testCaseClearTotal": 3,

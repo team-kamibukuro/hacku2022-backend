@@ -62,12 +62,12 @@
 
 #### レスポンスボディ
 
-| パラメータ名         | 型       | 内容                |
-|----------------|---------|-------------------|
-| status         | int     | レスポンスステータス        |
-| isCompileError | boolean | コンパイルエラーをしているかどうか |
-| compilerError  | string  | コンパイルエラーメッセージ     |
-| programOutput  | string  | コンソール実行結果         |
+| パラメータ名         | 型       | 内容                    |
+|----------------|---------|-----------------------|
+| status         | int     | レスポンスステータス,400 or 200 |
+| isCompileError | boolean | コンパイルエラーをしているかどうか     |
+| compilerError  | string  | コンパイルエラーメッセージ         |
+| programOutput  | string  | コンソール実行結果             |
 
 #### レスポンスサンプル
 
@@ -75,8 +75,8 @@
 {
   "status":200,
   "isCompileError": false,
-  "compiler_error":"prog.cc: In function 'int main()':\n\u003ccommand-line\u003e:0:3: warning: unused variable 'hogefuga' [-Wunused-variable]\nprog.cc:2:18: note: in expansion of macro 'x'\n int main() { int x = 0; std::cout \u003c\u003c \"hoge\" \u003c\u003c std::endl; }\n                  ^\n",
-  "program_output":"hoge\n"
+  "programError":"prog.cc: In function 'int main()':\n\u003ccommand-line\u003e:0:3: warning: unused variable 'hogefuga' [-Wunused-variable]\nprog.cc:2:18: note: in expansion of macro 'x'\n int main() { int x = 0; std::cout \u003c\u003c \"hoge\" \u003c\u003c std::endl; }\n                  ^\n",
+  "programOutput":"hoge\n"
 }
 ```
 

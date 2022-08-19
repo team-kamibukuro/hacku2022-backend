@@ -111,7 +111,7 @@ def is_prime(n):
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
                     await RoomRepository.checkMaterId(roomId)
-                    if connectCount >= 4:
+                    if connectCount >= 2:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
 

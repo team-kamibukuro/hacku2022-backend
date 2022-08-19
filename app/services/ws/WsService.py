@@ -7,6 +7,7 @@ from repository.RoomRepository import *
 import json
 import random
 import binascii
+import mojimoji
 from models.Question import *
 
 from sanic import response
@@ -73,13 +74,61 @@ def is_prime(n):
     return True
                             """
 
-                    comment = commentLanguage[data_json["language"]]
+
+
+
 
                     if data_json["attackType"] == "INDENT_INJECTION":
                         code = data_json["code"]
+                        codeLength = len(code)
+
+                        cursor = 0
+                        while cursor < codeLength:
+                            index = code.find("\n", cursor, codeLength)
+                            if index == -1:
+                                break
+                            cursor = index + 2
+                            while cursor < codeLength:
+                                if code[cursor] == ' ':
+                                    code = code[:cursor - 1] + code[cursor + 1:]
+                                    codeLength = len(code)
+                                else:
+                                    break
+
+                        codeLength = len(code)
+                        cursor = 0
+
+                        while cursor < codeLength:
+                            index = code.find("\n", cursor, codeLength)
+                            if index == -1:
+                                break
+                            cursor = index + 1
+                            randomNum = random.randint(2, 10)
+                            code = code[:cursor] + " "*randomNum + code[cursor:]
+                            codeLength = len(code)
+
+
+
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
+
+
+
+
+
+
+
 
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
-                        # code = data_json["code"]
+                        code = data_json["code"]
+                        comment = commentLanguage[data_json["language"]]
                         index = 0
                         for i in range(10):
                             startChar = random.randint(0, len(code))
@@ -94,18 +143,45 @@ def is_prime(n):
                             code = code[:index] + comment + code[index:]
 
 
-                    elif data_json["attackType"] == "TBC_POISONING":
-                        code = data_json["code"]
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
 
-                    await manager.broadcast_except_me(json.dumps(
-                        {
-                            "event": "ATTACK",
-                            "attackType": data_json["attackType"],
-                            "playerId": data_json["playerId"],
-                            "language": data_json["language"],
-                            "name": data_json["name"],
-                            "code": code
-                        }, ensure_ascii=False), ws)
+
+
+
+                    elif data_json["attackType"] == "TBC_POISONING":
+                        # code = data_json["code"]
+                        codeLength = len(code)
+
+
+
+                        for i in range(int(codeLength/100)):
+
+                            randomNum = random.randint(0, codeLength)
+                            excludedForwardChar = code[randomNum+1:randomNum]
+                            excludedBackChar = code[randomNum:randomNum+1]
+
+                            if excludedForwardChar != "\n" and excludedBackChar != "\n":
+                                code = code[:randomNum-1] + mojimoji.han_to_zen(code[randomNum]) + code[randomNum+1:]
+
+
+
+                        await manager.broadcast_except_me(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False), ws)
 
 
                 elif data_json["event"] == "CONNECT_SUCCESS":

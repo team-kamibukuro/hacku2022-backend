@@ -80,12 +80,17 @@ def is_prime(n):
 
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
                         # code = data_json["code"]
-                        startChar = random.randint(0, len(code))
-                        index = code.find("\n", startChar, len(code))
+                        index = 0
+                        for i in range(10):
+                            startChar = random.randint(0, len(code))
+                            index = code.find("\n", startChar, len(code))
+                            if code[index+2:index+3] != "\n":
+                                break
+
                         if index == -1:
                             code = comment + code
                         else:
-                            index = index + 3
+                            index = index + 2
                             code = code[:index] + comment + code[index:]
 
 
@@ -111,7 +116,7 @@ def is_prime(n):
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
                     await RoomRepository.checkMaterId(roomId)
-                    if connectCount >= 4:
+                    if connectCount >= 2:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
 

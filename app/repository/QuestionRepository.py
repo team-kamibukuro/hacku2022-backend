@@ -13,7 +13,6 @@ class QuestionRepository:
     async def choiceQuestion(self):
         async with async_session() as session:
             q = text("select * from questions order by random() limit 1")
-
             for r in await session.execute(q):
                 return Question(
                     id=r["id"],

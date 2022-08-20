@@ -80,12 +80,12 @@ class ConsoleService:
 
         authorization = self.headers.get('Authorization')
 
-#         code = """
-# inputNum = input()
-# for i in range(int(inputNum)+1):
-#     if i % 2 == 0:
-#         print(i, end=' ')
-#                 """
+        code = """
+inputNum = input()
+for i in range(int(inputNum)+1):
+    if i % 2 == 0:
+        print(i, end=' ')
+                """
 
         verifyTokenResult = verifyToken(authorization)
 

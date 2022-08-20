@@ -246,14 +246,28 @@ def is_prime(n):
                     manager.finishedUser.append({
                         "playerId": data_json["playerId"],
                         "name": data_json["name"],
-                        "time": timeResult
+                        "time": timeResult,
+                        "rank": 0
                     })
+
+                    sortedFinishedUsers = sorted(manager.finishedUser, key=lambda x: x['time'])
+
+                    tmpTime = ""
+                    tmpRank = 0
+
+                    for index, sortedFinishedUser in enumerate(sortedFinishedUsers):
+                        if index != 0 and sortedFinishedUser["time"] == tmpTime:
+                            sortedFinishedUser["rank"] = tmpRank
+                        else:
+                            sortedFinishedUser["rank"] = index + 1
+                            tmpRank = sortedFinishedUser["rank"]
+                            tmpTime = sortedFinishedUser["time"]
 
 
                     if len(manager.finishedUser) >= maxPlayer:
                         await manager.broadcast(json.dumps({
                             "event": "RANKING",
-                            "rank": sorted(manager.finishedUser, key=lambda x: x['time']),
+                            "users": sortedFinishedUsers
                         }, ensure_ascii=False))
 
 

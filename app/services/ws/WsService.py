@@ -53,7 +53,7 @@ class WsService:
         manager = managers[roomId]
         await manager.connect(request, ws)
 
-        maxPlayer = 4
+        maxPlayer = 2
 
 
 

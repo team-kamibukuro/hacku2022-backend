@@ -37,6 +37,10 @@ async def createRoom(request):
 async def getRoom(request):
     return await RoomService.getRoom(request)
 
+@app.post("/room/matching")
+async def getMatchingRoom(request):
+    return await RoomService.getMatchingRoom(request)
+
 @app.post("/console")
 async def executeConsole(request):
     return await ConsoleService.getConsoleResult(request)
@@ -44,6 +48,8 @@ async def executeConsole(request):
 @app.post("/testcase")
 async def executeTestCase(request):
     return await ConsoleService.getTestCaseResult(request)
+
+
 
 
 

@@ -75,3 +75,55 @@ class RoomService:
                 })
         except Exception:
             return response.json({"status": 400, "message": "ルーム名が間違っています。"}, status=400)
+
+
+    async def getMatchingRoom(self):
+        authorization = self.headers.get('Authorization')
+
+        verifyTokenResult = verifyToken(authorization)
+
+        if verifyTokenResult['status'] != 200:
+            return response.json(verifyTokenResult, status=400)
+
+
+        for roomId in managers.keys():
+            print(len(managers[roomId].active_connections))
+            if managers[roomId].isRandomRoom and len(managers[roomId].active_connections) < 2:
+
+                roomModel = await RoomRepository.selectRoomId(roomId)
+
+                res = roomModel.scalars().first().asCreateDict()
+
+                return response.json(res, headers={
+                    "Authorization": authorization
+                })
+
+        room = Room(
+            roomName="Matching-Room-" + str(uuid.uuid4())[-8:],
+            masterUserId=self.json['userId'],
+            roomIsRandom=True
+        )
+
+        managers[room.id] = ConnectionManager()
+        managers[room.id].isRandomRoom = True
+        await RoomRepository.create(room)
+
+        return response.json(room.asDict(), headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
+            "Authorization": authorization
+        })
+
+
+
+
+
+
+
+
+        return response.json({"good": "response"}, headers={
+            "Access-Control-Expose-Headers": "*, Authorization",
+            "Authorization": authorization
+        })
+
+
+

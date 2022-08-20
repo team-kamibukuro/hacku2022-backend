@@ -211,6 +211,7 @@ def is_prime(n):
 
                             history = History(
                                 questionsId=questionModel.id,
+                                language=data_json["language"],
                                 usersId=activeConnection["id"]
                             )
 

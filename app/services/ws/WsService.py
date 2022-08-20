@@ -8,6 +8,8 @@ import json
 import random
 import binascii
 import mojimoji
+import pprint
+import datetime
 from models.Question import *
 
 from sanic import response
@@ -48,6 +50,8 @@ class WsService:
     async def playGame(request,  ws, roomId):
         manager = managers[roomId]
         await manager.connect(request, ws)
+
+        maxPlayer = 2
 
 
 
@@ -107,6 +111,16 @@ def is_prime(n):
                             code = code[:cursor] + " "*randomNum + code[cursor:]
                             codeLength = len(code)
 
+                        await manager.broadcast(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False))
+
 
 
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
@@ -124,6 +138,16 @@ def is_prime(n):
                         else:
                             index = index + 2
                             code = code[:index] + comment + code[index:]
+
+                        await manager.broadcast(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False))
 
 
 
@@ -146,17 +170,28 @@ def is_prime(n):
                             if excludedForwardChar != "\n" and excludedBackChar != "\n":
                                 code = code[:randomNum-1] + mojimoji.han_to_zen(code[randomNum]) + code[randomNum+1:]
 
+                        await manager.broadcast(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "language": data_json["language"],
+                                "name": data_json["name"],
+                                "code": code
+                            }, ensure_ascii=False))
 
 
-                    await manager.broadcast(json.dumps(
-                        {
-                            "event": "ATTACK",
-                            "attackType": data_json["attackType"],
-                            "playerId": data_json["playerId"],
-                            "language": data_json["language"],
-                            "name": data_json["name"],
-                            "code": code
-                        }, ensure_ascii=False))
+                    elif data_json["attackType"] == "RANSOMWARE":
+
+                        await manager.broadcast(json.dumps(
+                            {
+                                "event": "ATTACK",
+                                "attackType": data_json["attackType"],
+                                "playerId": data_json["playerId"],
+                                "heart": data_json["heart"],
+                                "name": data_json["name"]
+                            }, ensure_ascii=False))
+
 
 
                 elif data_json["event"] == "CONNECT_SUCCESS":
@@ -167,7 +202,7 @@ def is_prime(n):
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
                     await RoomRepository.checkMaterId(roomId)
-                    if connectCount >= 2:
+                    if connectCount >= maxPlayer:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
 
@@ -193,8 +228,34 @@ def is_prime(n):
 
 
                 elif data_json["event"] == "FINISHED":
+                    manager.finishedUserCount += 1
                     await manager.broadcast_except_me(json.dumps(
-                        {"event": "FINISHED","name": data_json["name"], "playerId": data_json["playerId"]}, ensure_ascii=False), ws)
+                        {"event": "FINISHED", "name": data_json["name"], "playerId": data_json["playerId"]}, ensure_ascii=False), ws)
+
+
+                    if manager.finishedUserCount >= maxPlayer:
+                        await manager.broadcast(json.dumps(
+                            {"event": "ALL_FINISHED"}, ensure_ascii=False))
+
+                elif data_json["event"] == "ALL_FINISHED":
+
+                    s = int(data_json["time"]) / 1000.0
+
+                    timeResult = datetime.datetime.fromtimestamp(s).strftime('%M:%S')
+
+                    manager.finishedUser.append({
+                        "playerId": data_json["playerId"],
+                        "name": data_json["name"],
+                        "time": timeResult
+                    })
+
+
+                    if len(manager.finishedUser) >= maxPlayer:
+                        await manager.broadcast(json.dumps({
+                            "event": "RANKING",
+                            "rank": sorted(manager.finishedUser, key=lambda x: x['time']),
+                        }, ensure_ascii=False))
+
 
 
 

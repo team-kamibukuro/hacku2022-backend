@@ -36,16 +36,16 @@ class ConsoleService:
     async def getConsoleResult(self):
         authorization = self.headers.get('Authorization')
 
-#         code = """
-# def is_prime(n):
-#     if n < 2:
-#         return False
-#     for k in range(2, int(n/2)+1):
-#         if n % k == 0:
-#             return False
-#     return True
-# print(is_prime(5))
-#         """
+        code = """
+def is_prime(n):
+    if n < 2:
+        return False
+    for k in range(2, int(n/2)+1):
+        if n % k == 0:
+            return False
+    return True
+print(is_prime(5))
+        """
 
         verifyTokenResult = verifyToken(authorization)
 
@@ -56,9 +56,10 @@ class ConsoleService:
         code = self.json['code']
         language = self.json['language']
 
+        testCaseModel = await TestCaseRepository.getTestCase(self.json['questionId'])
 
         res = requests.post("https://wandbox.org/api/compile.json",
-                                 json={"code": code, "compiler": compilers[language]},
+                                 json={"code": code, "compiler": compilers[language], "stdin": testCaseModel.testcasesInput},
                                  headers={"Content-type": "application/json"})
 
         resDict= res.json()
@@ -80,12 +81,12 @@ class ConsoleService:
 
         authorization = self.headers.get('Authorization')
 
-#         code = """
-# inputNum = input()
-# for i in range(int(inputNum)+1):
-#     if i % 2 == 0:
-#         print(i, end=' ')
-#                 """
+        code = """
+inputNum = input()
+for i in range(int(inputNum)+1):
+    if i % 2 == 0:
+        print(i, end=' ')
+                """
 
         verifyTokenResult = verifyToken(authorization)
 

@@ -116,14 +116,3 @@ class RoomService:
 
 
 
-
-
-
-
-        return response.json({"good": "response"}, headers={
-            "Access-Control-Expose-Headers": "*, Authorization",
-            "Authorization": authorization
-        })
-
-
-

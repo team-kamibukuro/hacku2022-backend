@@ -157,7 +157,7 @@ def is_prime(n):
 
 
                     elif data_json["attackType"] == "TBC_POISONING":
-                        # code = data_json["code"]
+                        code = data_json["code"]
                         codeLength = len(code)
 
 
@@ -212,10 +212,14 @@ def is_prime(n):
                     await manager.broadcast_except_me(json.dumps(
                         {"event": "UPDATE_HEART", "playerId": data_json["playerId"], "heart": data_json["heart"]}), ws)
 
+                elif data_json["event"] == "FIREWALL":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "FIREWALL", "name": data_json["name"], "status": data_json["status"], "playerId": data_json["playerId"]}, ensure_ascii=False), ws)
+
 
                 elif data_json["event"] == "FINISHED":
                     await manager.broadcast_except_me(json.dumps(
-                        {"event": "FINISHED", "playerId": data_json["playerId"]}), ws)
+                        {"event": "FINISHED","name": data_json["name"], "playerId": data_json["playerId"]}, ensure_ascii=False), ws)
 
 
 

@@ -109,23 +109,6 @@ def is_prime(n):
 
 
 
-                        await manager.broadcast_except_me(json.dumps(
-                            {
-                                "event": "ATTACK",
-                                "attackType": data_json["attackType"],
-                                "playerId": data_json["playerId"],
-                                "language": data_json["language"],
-                                "name": data_json["name"],
-                                "code": code
-                            }, ensure_ascii=False), ws)
-
-
-
-
-
-
-
-
                     elif data_json["attackType"] == "COMMENTOUT_INJECTION":
                         code = data_json["code"]
                         comment = commentLanguage[data_json["language"]]
@@ -143,15 +126,7 @@ def is_prime(n):
                             code = code[:index] + comment + code[index:]
 
 
-                        await manager.broadcast_except_me(json.dumps(
-                            {
-                                "event": "ATTACK",
-                                "attackType": data_json["attackType"],
-                                "playerId": data_json["playerId"],
-                                "language": data_json["language"],
-                                "name": data_json["name"],
-                                "code": code
-                            }, ensure_ascii=False), ws)
+
 
 
 
@@ -173,15 +148,15 @@ def is_prime(n):
 
 
 
-                        await manager.broadcast_except_me(json.dumps(
-                            {
-                                "event": "ATTACK",
-                                "attackType": data_json["attackType"],
-                                "playerId": data_json["playerId"],
-                                "language": data_json["language"],
-                                "name": data_json["name"],
-                                "code": code
-                            }, ensure_ascii=False), ws)
+                    await manager.broadcast(json.dumps(
+                        {
+                            "event": "ATTACK",
+                            "attackType": data_json["attackType"],
+                            "playerId": data_json["playerId"],
+                            "language": data_json["language"],
+                            "name": data_json["name"],
+                            "code": code
+                        }, ensure_ascii=False))
 
 
                 elif data_json["event"] == "CONNECT_SUCCESS":

@@ -45,8 +45,14 @@ class ConnectionManager:
         return result
 
 
-    def disconnect(self, websocket):
-        self.active_connections.remove(websocket)
+    async def disconnect(self, websocket):
+        for i, connection in enumerate(self.active_connections):
+            if connection["ws"] == websocket:
+                self.active_connections.pop(i)
+                self.finishedUserCount -= 1
+                websocket.close()
+
+
 
     async def send_personal_message(self, message: str, websocket):
         await websocket.send(message)

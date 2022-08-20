@@ -257,16 +257,17 @@ def is_prime(n):
                         }, ensure_ascii=False))
 
 
+                elif data_json["event"] == "DISCONNECT":
+                    await manager.disconnect(ws)
+                    if manager.finishedUserCount == 0:
+                        managers.pop(roomId)
+
 
 
 
 
         except ws.exceptions.ConnectionClosed:
-            manager.disconnect(ws)
-            await manager.broadcast(json.dumps(
-                {"name": binascii.unhexlify(name).decode('utf-8'), "key": manager.get_key(request),
-                 "type": "disconnect",
-                 "data": ""}))
+            await manager.disconnect(ws)
 
 
 

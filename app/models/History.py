@@ -31,13 +31,14 @@ class History(Base):
 
 
     def __init__(self, usersId='', questionsId='', historiesTime='', historiesRanking=0):
+        tz = datetime.timezone(datetime.timedelta(hours=9))
 
         self.id = str(uuid.uuid4())
         self.usersId = usersId
         self.questionsId = questionsId
         self.historiesTime = historiesTime
         self.historiesRanking = historiesRanking
-        self.createdAt = str(datetime.datetime.now())
+        self.createdAt = str(datetime.datetime.now(tz))
 
     def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

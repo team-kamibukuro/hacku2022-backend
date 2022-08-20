@@ -14,4 +14,11 @@ class TestCaseRepository():
 
             return testCaseModel.scalars().all()
 
+    async def getTestCase(questionId):
+        async with async_session() as session:
+            q = select(Testcase).where(Testcase.questionsId == questionId)
+            testCaseModel = await (session.execute(q))
+
+            return testCaseModel.scalars().first()
+
 

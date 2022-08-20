@@ -36,10 +36,11 @@
 
 #### リクエストボディ
 
-| パラメータ名   | 型      | 内容         |
-|----------|--------|------------|
-| code     | string | プログラミングコード |
-| language | string | プログラミング言語  |
+| パラメータ名     | 型      | 内容         |
+|------------|--------|------------|
+| code       | string | プログラミングコード |
+| language   | string | プログラミング言語  |
+| questionId | string | 問題ID       |
 
 
 
@@ -48,7 +49,8 @@
 ```JSON
 {
   "code": "print(\"hello worl\")",
-  "language": "java"
+  "language": "java",
+  "questionId": "DQ_01"
 }
 ```
 
@@ -62,12 +64,12 @@
 
 #### レスポンスボディ
 
-| パラメータ名         | 型       | 内容                    |
-|----------------|---------|-----------------------|
-| status         | int     | レスポンスステータス,400 or 200 |
+| パラメータ名 | 型       | 内容                    |
+|--------|---------|-----------------------|
+| status | int     | レスポンスステータス,400 or 200 |
 | isCompileError | boolean | コンパイルエラーをしているかどうか     |
-| compilerError  | string  | コンパイルエラーメッセージ         |
-| programOutput  | string  | コンソール実行結果             |
+| programError  | string  | コンパイルエラーメッセージ         |
+| programOutput | string  | コンソール実行結果             |
 
 #### レスポンスサンプル
 

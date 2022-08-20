@@ -41,6 +41,8 @@
 | code       | string | プログラミングコード |
 | language   | string | プログラミング言語  |
 | questionId | string | 問題ID       |
+| roomId     | string | 部屋ID       |
+| userId     | string | ユーザーId     |
 
 
 
@@ -50,7 +52,9 @@
 {
   "code": "print(\"hello worl\")",
   "language": "java",
-  "questionId": "DQ_01"
+  "questionId": "DQ_01",
+  "roomId": "uuid",
+  "userId": "id-003"
 }
 ```
 

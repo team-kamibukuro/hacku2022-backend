@@ -23,18 +23,31 @@ class HistoryDetail(Base):
 
     id = Column('id', String(255), primary_key=True)
     historiesId = Column('historiesId', String(255))
-    historyCode = Column('historyCode', String(255))
+    historyCode = Column('historyCode', String(4096))
     createdAt = Column('createdAt', String(255))
+    isExecuteTest = Column('isExecuteTest', Boolean)
+    isProgramError = Column('isProgramError', Boolean)
+    programOutput = Column('programOutput', String(1024))
+    programError = Column('programError', String(1024))
+    testCaseTotal = Column('testCaseTotal', Integer)
+    testCaseClearTotal = Column('testCaseClearTotal', Integer)
 
 
-
-    def __init__(self, historiesId='', historyCode=''):
+    def __init__(
+            self, historiesId='', historyCode='', isExecuteTest=False, isProgramError=False,
+            programOutput='', programError='', testCaseTotal=0, testCaseClearTotal=0):
         tz = datetime.timezone(datetime.timedelta(hours=9))
 
 
         self.id = str(uuid.uuid4())
         self.historiesId = historiesId
         self.historyCode = historyCode
+        self.isExecuteTest = isExecuteTest
+        self.isProgramError = isProgramError
+        self.programOutput = programOutput
+        self.programError = programError
+        self.testCaseTotal = testCaseTotal
+        self.testCaseClearTotal = testCaseClearTotal
         self.createdAt = str(datetime.datetime.now(tz))
 
     def asDict(self):

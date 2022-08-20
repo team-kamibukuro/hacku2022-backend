@@ -15,10 +15,11 @@ class HistoryRepository():
             session.add(history)
             await session.commit()
 
-    # async def updateHistory(history):
-    #     async with async_session() as session:
-    #         result = await (session.execute(select(History).filter(History.id == history.id)))
-    #         session.
+
+    async def saveHistoryDetail(historyDetail):
+        async with async_session() as session:
+            session.add(historyDetail)
+            await session.commit()
 
 
 

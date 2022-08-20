@@ -5,6 +5,9 @@ import time
 from models.User import User
 from .clientJwt import *
 from repository.TestCaseRepository import *
+from models.HistoryDetail import *
+from services.ws.WsService import managers
+from repository.HistoryRepository import *
 from models.Testcase import *
 import json
 from sqlalchemy.ext.serializer import loads, dumps
@@ -65,6 +68,18 @@ print(is_prime(5))
         resDict= res.json()
 
         isError = True if resDict["status"] != '0' else False
+
+        historyDetail = HistoryDetail(
+            historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
+            historyCode=code,
+            isProgramError=isError,
+            programOutput=resDict["program_output"],
+            programError=resDict["program_error"],
+        )
+
+        await HistoryRepository.saveHistoryDetail(historyDetail)
+
+
 
 
         return response.json({
@@ -133,6 +148,18 @@ for i in range(int(inputNum)+1):
             time.sleep(0.3)
 
         isClearTestCases = True if testCaseClearTotal == testCaseTotal else False
+
+        historyDetail = HistoryDetail(
+            historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
+            historyCode=code,
+            isExecuteTest=True,
+            testCaseTotal=testCaseTotal,
+            testCaseClearTotal=testCaseClearTotal
+        )
+
+        await HistoryRepository.saveHistoryDetail(historyDetail)
+
+
 
         return response.json({
             "status": 200,

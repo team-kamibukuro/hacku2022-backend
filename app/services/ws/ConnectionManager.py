@@ -8,6 +8,7 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections= []
         self.full_text = ""
+        self.isRandomRoom = False
 
     def __len__(self):
         return len(self.active_connections)

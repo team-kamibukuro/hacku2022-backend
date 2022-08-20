@@ -8,12 +8,18 @@ from models.HistoryDetail import *
 class HistoryRepository():
 
 
-    async def getTestCases(questionId):
-        async with async_session() as session:
-            q = select(History).where(History.questionsId == questionId)
-            testCaseModel = await (session.execute(q))
 
-            return testCaseModel.scalars().all()
+
+    async def saveHistory(history):
+        async with async_session() as session:
+            session.add(history)
+            await session.commit()
+
+    # async def updateHistory(history):
+    #     async with async_session() as session:
+    #         result = await (session.execute(select(History).filter(History.id == history.id)))
+    #         session.
+
 
 
 

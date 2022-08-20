@@ -11,6 +11,8 @@ import mojimoji
 import pprint
 import datetime
 from models.Question import *
+from repository.HistoryRepository import *
+from models.History import *
 
 from sanic import response
 from sqlalchemy.ext.serializer import loads, dumps
@@ -51,7 +53,7 @@ class WsService:
         manager = managers[roomId]
         await manager.connect(request, ws)
 
-        maxPlayer = 2
+        maxPlayer = 4
 
 
 
@@ -205,6 +207,16 @@ def is_prime(n):
                     if connectCount >= maxPlayer:
                         questionModel = await QuestionRepository.choiceQuestion(request)
 
+                        for activeConnection in manager.active_connections:
+
+                            history = History(
+                                questionsId=questionModel.id,
+                                usersId=activeConnection["id"]
+                            )
+
+                            manager.historyModels[activeConnection["id"]] = history
+                            await HistoryRepository.saveHistory(history)
+
 
                         await manager.broadcast(json.dumps(
                             {
@@ -250,21 +262,28 @@ def is_prime(n):
                         "rank": 0
                     })
 
-                    sortedFinishedUsers = sorted(manager.finishedUser, key=lambda x: x['time'])
-
-                    tmpTime = ""
-                    tmpRank = 0
-
-                    for index, sortedFinishedUser in enumerate(sortedFinishedUsers):
-                        if index != 0 and sortedFinishedUser["time"] == tmpTime:
-                            sortedFinishedUser["rank"] = tmpRank
-                        else:
-                            sortedFinishedUser["rank"] = index + 1
-                            tmpRank = sortedFinishedUser["rank"]
-                            tmpTime = sortedFinishedUser["time"]
 
 
                     if len(manager.finishedUser) >= maxPlayer:
+
+                        sortedFinishedUsers = sorted(manager.finishedUser, key=lambda x: x['time'])
+
+                        tmpTime = ""
+                        tmpRank = 0
+
+                        for index, sortedFinishedUser in enumerate(sortedFinishedUsers):
+                            if index != 0 and sortedFinishedUser["time"] == tmpTime:
+                                sortedFinishedUser["rank"] = tmpRank
+                            else:
+                                sortedFinishedUser["rank"] = index + 1
+                                tmpRank = sortedFinishedUser["rank"]
+                                tmpTime = sortedFinishedUser["time"]
+
+                            history = manager.historyModels[sortedFinishedUser["playerId"]]
+                            history.historiesRanking = sortedFinishedUser["rank"]
+                            history.historiesTime = sortedFinishedUser["time"]
+                            await HistoryRepository.saveHistory(history)
+
                         await manager.broadcast(json.dumps({
                             "event": "RANKING",
                             "users": sortedFinishedUsers

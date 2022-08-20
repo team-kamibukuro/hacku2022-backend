@@ -11,6 +11,7 @@ class ConnectionManager:
         self.isRandomRoom = False
         self.finishedUserCount = 0
         self.finishedUser = []
+        self.historyModels = {}
 
     def __len__(self):
         return len(self.active_connections)

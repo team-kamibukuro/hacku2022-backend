@@ -41,6 +41,8 @@
 | code     | string | プログラミングコード |
 | testId   | string | 問題文ID      |
 | language | string | プログラミング言語  |
+| roomId     | string | 部屋ID       |
+| userId     | string | ユーザーId     |
 
 
 
@@ -50,7 +52,9 @@
 {
   "code": "print(\"hello worl\")",
   "language": "python",
-  "testId": "test-00001"
+  "testId": "test-00001",
+  "roomId": "uuid",
+  "userId": "id-003"
 }
 ```
 

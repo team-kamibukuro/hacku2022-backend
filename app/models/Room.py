@@ -29,12 +29,12 @@ class Room(Base):
 
 
 
-    def __init__(self, masterUserId='', roomName=''):
+    def __init__(self, masterUserId='', roomName='', roomIsRandom=False):
 
         self.id = str(uuid.uuid4())
         self.masterUserId = masterUserId
         self.roomName = roomName
-        self.roomIsRandom = False
+        self.roomIsRandom = roomIsRandom
 
     def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -8,8 +8,6 @@ class RoomRepository():
 
     # entity = User
 
-
-
     async def create(room: Room):
         async with async_session() as session:
             session.add(room)
@@ -39,7 +37,15 @@ class RoomRepository():
 
     async def selectRoomName(roomName):
         async with async_session() as session:
-            q = select(Room).where(Room.roomName == roomName)
+            q = select(Room).where(Room.roomName == roomName, Room.roomIsRandom == False)
+
+            roomModel = await (session.execute(q))
+
+            return roomModel
+
+    async def selectRoomId(roomId):
+        async with async_session() as session:
+            q = select(Room).where(Room.id == roomId)
 
             roomModel = await (session.execute(q))
 

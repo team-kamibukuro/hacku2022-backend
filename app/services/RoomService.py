@@ -106,9 +106,12 @@ class RoomService:
 
         managers[room.id] = ConnectionManager()
         managers[room.id].isRandomRoom = True
+
+
+
         await RoomRepository.create(room)
 
-        return response.json(room.asDict(), headers={
+        return response.json(room.asCreateDict(), headers={
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })

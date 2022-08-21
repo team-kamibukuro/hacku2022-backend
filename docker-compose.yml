@@ -19,3 +19,5 @@ services:
     volumes:
       - ./:/usr/src/backend/
     tty: true
+    env_file:
+      - .env

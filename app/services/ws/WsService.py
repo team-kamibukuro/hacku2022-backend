@@ -196,6 +196,8 @@ def is_prime(n):
 
 
 
+
+
                 elif data_json["event"] == "CONNECT_SUCCESS":
 
                     masterUserId = await RoomRepository.checkMaterId(roomId)
@@ -234,6 +236,13 @@ def is_prime(n):
                 elif data_json["event"] == "UPDATE_HEART":
                     await manager.broadcast_except_me(json.dumps(
                         {"event": "UPDATE_HEART", "playerId": data_json["playerId"], "heart": data_json["heart"]}), ws)
+
+
+                elif data_json["event"] == "500_ERROR":
+                    await manager.broadcast_except_me(json.dumps(
+                        {"event": "500_ERROR", "status": data_json["status"], "playerId": data_json["playerId"], "name": data_json["name"]}, ensure_ascii=False), ws)
+
+
 
                 elif data_json["event"] == "FIREWALL":
                     await manager.broadcast_except_me(json.dumps(

@@ -3,9 +3,6 @@ import datetime
 
 import jwt
 
-from dotenv import load_dotenv
-
-load_dotenv(verbose=True)
 
 algorithm="HS256"
 key = os.environ.get("JWT_SECRET")

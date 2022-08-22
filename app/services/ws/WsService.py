@@ -312,6 +312,8 @@ def is_prime(n):
 
         except ws.exceptions.ConnectionClosed:
             await manager.disconnect(ws)
+            if manager.finishedUserCount == 0:
+                managers.pop(roomId)
 
 
 

@@ -120,7 +120,8 @@ def is_prime(n):
                                 "playerId": data_json["playerId"],
                                 "language": data_json["language"],
                                 "name": data_json["name"],
-                                "code": code
+                                "code": code,
+                                "firewall": data_json["firewall"]
                             }, ensure_ascii=False))
 
 
@@ -148,7 +149,8 @@ def is_prime(n):
                                 "playerId": data_json["playerId"],
                                 "language": data_json["language"],
                                 "name": data_json["name"],
-                                "code": code
+                                "code": code,
+                                "firewall": data_json["firewall"]
                             }, ensure_ascii=False))
 
 
@@ -179,7 +181,8 @@ def is_prime(n):
                                 "playerId": data_json["playerId"],
                                 "language": data_json["language"],
                                 "name": data_json["name"],
-                                "code": code
+                                "code": code,
+                                "firewall": data_json["firewall"]
                             }, ensure_ascii=False))
 
 
@@ -191,7 +194,8 @@ def is_prime(n):
                                 "attackType": data_json["attackType"],
                                 "playerId": data_json["playerId"],
                                 "heart": data_json["heart"],
-                                "name": data_json["name"]
+                                "name": data_json["name"],
+                                "firewall": data_json["firewall"]
                             }, ensure_ascii=False))
 
 
@@ -245,8 +249,8 @@ def is_prime(n):
 
 
                 elif data_json["event"] == "FIREWALL":
-                    await manager.broadcast_except_me(json.dumps(
-                        {"event": "FIREWALL", "name": data_json["name"], "status": data_json["status"], "playerId": data_json["playerId"]}, ensure_ascii=False), ws)
+                    await manager.broadcast(json.dumps(
+                        {"event": "FIREWALL", "name": data_json["name"], "status": data_json["status"], "playerId": data_json["playerId"]}, ensure_ascii=False))
 
 
                 elif data_json["event"] == "FINISHED":

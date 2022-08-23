@@ -26,15 +26,19 @@ class Room(Base):
     roomName = Column('roomName', String(255))
     questionsId = Column('questionsId', String(255))
     roomIsRandom = Column('roomIsRandom', Boolean)
+    isDemo = Column('isDemo', Boolean)
+    maxPlayer = Column('maxPlayer', Integer)
 
 
 
-    def __init__(self, masterUserId='', roomName='', roomIsRandom=False):
+    def __init__(self, masterUserId='', roomName='', roomIsRandom=False, isDemo=False, maxPlayer=4):
 
         self.id = str(uuid.uuid4())
         self.masterUserId = masterUserId
         self.roomName = roomName
         self.roomIsRandom = roomIsRandom
+        self.isDemo = isDemo
+        self.maxPlayer = maxPlayer
 
     def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -44,7 +48,8 @@ class Room(Base):
               "status": 200,
               "roomId": self.id,
               "roomName": self.roomName,
-              "masterUserId": self.masterUserId
+              "masterUserId": self.masterUserId,
+              "isDemo": self.isDemo
             }
 
     def dict(self):

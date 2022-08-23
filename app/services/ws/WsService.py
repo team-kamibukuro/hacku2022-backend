@@ -53,7 +53,12 @@ class WsService:
         manager = managers[roomId]
         await manager.connect(request, ws)
 
-        maxPlayer = 2
+
+        roomModelResult = await RoomRepository.selectRoomId(roomId)
+        roomModel = roomModelResult.scalars().first().asDict()
+
+
+        maxPlayer = roomModel["maxPlayer"]
 
 
 
@@ -204,14 +209,13 @@ def is_prime(n):
 
                 elif data_json["event"] == "CONNECT_SUCCESS":
 
-                    masterUserId = await RoomRepository.checkMaterId(roomId)
+                    masterUserId = roomModel["masterUserId"]
                     isMaster = True if data_json["playerId"] == masterUserId else False
 
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
-                    await RoomRepository.checkMaterId(roomId)
                     if connectCount >= maxPlayer:
-                        questionModel = await QuestionRepository.choiceQuestion(request)
+                        questionModel = await QuestionRepository.choiceQuestion(roomModel["isDemo"])
 
                         for activeConnection in manager.active_connections:
 

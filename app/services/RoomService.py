@@ -33,6 +33,8 @@ class RoomService:
         room = Room(
             roomName=self.json['roomName'],
             masterUserId=self.json['masterUserId'],
+            isDemo=self.json['isDemo'],
+            maxPlayer=self.json['maxPlayer']
         )
 
         managers[room.id] = ConnectionManager()

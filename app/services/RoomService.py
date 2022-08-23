@@ -88,7 +88,7 @@ class RoomService:
 
         for roomId in managers.keys():
             print(len(managers[roomId].active_connections))
-            if managers[roomId].isRandomRoom and len(managers[roomId].active_connections) < 2:
+            if managers[roomId].isRandomRoom and len(managers[roomId].active_connections) < 4:
 
                 roomModel = await RoomRepository.selectRoomId(roomId)
 

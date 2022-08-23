@@ -36,10 +36,12 @@
 
 #### リクエストボディ
 
-| パラメータ名   | 型      | 内容          |
-|----------|--------|-------------|
-| masterUserId   | string | マスターユーザーのID |
-| roomName | string | ルーム名        |
+| パラメータ名       | 型       | 内容            |
+|--------------|---------|---------------|
+| masterUserId | string  | マスターユーザーのID   |
+| roomName     | string  | ルーム名          |
+| isDemo       | boolean | demoモードかどうか   |
+| maxPlayer     | int     | プレイヤー数(2 ~ 4) |
 
 
 
@@ -48,7 +50,9 @@
 ```JSON
 {
   "masterUserId": "user-0001",
-  "roomName": "パオーン・プログラミングクラブ"
+  "roomName": "パオーン・プログラミングクラブ",
+  "isDemo": true,
+  "maxPlayer": 3
 }
 ```
 
@@ -68,6 +72,7 @@
 | roomId   | string | 部屋ID       |
 | roomName | string | 部屋名        |
 | masterUserId | string | マスターユーザID  |
+| isDemo       | boolean | demoモードかどうか   |
 
 #### レスポンスサンプル
 
@@ -76,7 +81,8 @@
   "status": 200,
   "roomId": "UUID-001",
   "roomName": "パオーン・プログラミングクラブ",
-  "masterUserId": "user-0001"
+  "masterUserId": "user-0001",
+  "isDemo": true
 }
 ```
 

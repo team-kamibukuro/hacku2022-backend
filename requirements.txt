@@ -9,3 +9,4 @@ sanic-cors
 sanic-ext
 requests
 mojimoji
+uvicorn

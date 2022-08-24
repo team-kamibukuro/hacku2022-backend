@@ -35,7 +35,12 @@ jobs:
         run: sudo apt install postgresql -y
         
       - name: set DDL
-        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U hacku -d hack-u-2022 -f ./app/init_db/DDL.sql
+        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ DB_USER_NAME }} -d hack-u-2022 -f ./app/init_db/DDL.sql
+      
+      - name: set DDL
+        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ DB_USER_NAME }} -d hack-u-2022 -f ./app/init_db/DML.sql
+    
+      
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2

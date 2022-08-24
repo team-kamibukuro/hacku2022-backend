@@ -5,7 +5,7 @@ import jwt
 
 
 algorithm="HS256"
-key = os.environ.get("JWT_SECRET")
+key = os.environ.get("CUSTOMCONNSTR_JWT_SECRET")
 
 def createToken(userId, userName):
 

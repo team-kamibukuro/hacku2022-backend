@@ -1,3 +1,3 @@
-PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -c "drop table $(PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -P tuples_only=1 -c '\dt' | cut -d '|' -f 2 |sed '/^$/d' | paste -sd "," | sed 's/ //g')"
-PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -f ./db/DDL.sql
-PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -f ./db/DML.sql
+PGPASSWORD=${POSTGRESQLCONNSTR_DB_PASSWORD} psql -p 5432 -h ${POSTGRESQLCONNSTR_DB_HOST} -U ${POSTGRESQLCONNSTR_DB_USER_NAME} -d ${POSTGRESQLCONNSTR_DB_NAME} -c "drop table $(PGPASSWORD=${POSTGRESQLCONNSTR_DB_PASSWORD} psql -h ${POSTGRESQLCONNSTR_DB_HOST} -U ${POSTGRESQLCONNSTR_DB_USER_NAME} -d ${POSTGRESQLCONNSTR_DB_NAME} -P tuples_only=1 -c '\dt' | cut -d '|' -f 2 |sed '/^$/d' | paste -sd "," | sed 's/ //g')"
+PGPASSWORD=${POSTGRESQLCONNSTR_DB_PASSWORD} psql -p 5432 -h ${POSTGRESQLCONNSTR_DB_HOST} -U ${POSTGRESQLCONNSTR_DB_USER_NAME} -d ${POSTGRESQLCONNSTR_DB_NAME} -f ./init_db/DDL.sql
+PGPASSWORD=${POSTGRESQLCONNSTR_DB_PASSWORD} psql -p 5432 -h ${POSTGRESQLCONNSTR_DB_HOST} -U ${POSTGRESQLCONNSTR_DB_USER_NAME} -d ${POSTGRESQLCONNSTR_DB_NAME} -f ./init_db/DML.sql

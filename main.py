@@ -65,4 +65,4 @@ async def playGame(request,  ws, room_id):
 if __name__ == '__main__':
 
     # subprocess.call(["sh", "./init_db/db.sh"], shell=False)
-    app.run(host='127.0.0.1', port=8089, auto_reload=True)
+    app.run(host='0.0.0.0', port=8089, auto_reload=True)

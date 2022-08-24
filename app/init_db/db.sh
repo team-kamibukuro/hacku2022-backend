@@ -1,0 +1,3 @@
+PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -c "drop table $(PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -P tuples_only=1 -c '\dt' | cut -d '|' -f 2 |sed '/^$/d' | paste -sd "," | sed 's/ //g')"
+PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -f ./db/DDL.sql
+PGPASSWORD=hacku2022 psql -h hack-u-database -p 5432 -U hacku -d hack-u-2022 -f ./db/DML.sql

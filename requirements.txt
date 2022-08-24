@@ -5,7 +5,6 @@ aioredis
 sqlalchemy
 asyncpg
 PyJWT
-python-dotenv
 sanic-cors
 sanic-ext
 requests

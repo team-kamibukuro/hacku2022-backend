@@ -35,10 +35,10 @@ jobs:
         run: sudo apt install postgresql -y
         
       - name: set DDL
-        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER_NAME }} -d hack-u-2022 -f ./app/init_db/DDL.sql
+        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER_NAME }} -d hack-u-2022 -f ./init_db/DDL.sql
       
       - name: set DML
-        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER_NAME }} -d hack-u-2022 -f ./app/init_db/DML.sql
+        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER_NAME }} -d hack-u-2022 -f ./init_db/DML.sql
     
       
       

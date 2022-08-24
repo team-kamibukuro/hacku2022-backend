@@ -56,7 +56,7 @@ print(is_prime(5))
             return response.json(verifyTokenResult, status=400)
 
 
-        code = self.json['code']
+        # code = self.json['code']
         language = self.json['language']
 
         testCaseModel = await TestCaseRepository.getTestCase(self.json['questionId'])
@@ -67,14 +67,17 @@ print(is_prime(5))
 
         resDict= res.json()
 
+
         isError = True if resDict["status"] != '0' else False
+
+        errorOutput = resDict["compiler_error"] if resDict["compiler_error"] != '' else resDict["program_output"]
 
         historyDetail = HistoryDetail(
             historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
             historyCode=code,
             isProgramError=isError,
             programOutput=resDict["program_output"],
-            programError=resDict["program_error"],
+            programError=errorOutput,
         )
 
         await HistoryRepository.saveHistoryDetail(historyDetail)
@@ -124,8 +127,6 @@ for i in range(int(inputNum)+1):
                                 headers={"Content-type": "application/json"})
             resJson = res.json()
 
-            print(resJson)
-
             isClearTestCase = False
             isCompileError = False
             compilerError = ""
@@ -137,7 +138,7 @@ for i in range(int(inputNum)+1):
                     print("成功")
             else:
                 isCompileError = True
-                compilerError = resJson["program_error"]
+                compilerError = resJson["compiler_error"] if resJson["compiler_error"] != '' else resJson["program_output"]
 
             result.append({
                 "testCaseId": testCaseModel.id,

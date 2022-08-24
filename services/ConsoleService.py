@@ -67,7 +67,6 @@ print(is_prime(5))
 
         resDict= res.json()
 
-        print(resDict)
 
         isError = True if resDict["status"] != '0' else False
 
@@ -77,8 +76,8 @@ print(is_prime(5))
             historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
             historyCode=code,
             isProgramError=isError,
-            programOutput=errorOutput,
-            programError=resDict["program_error"],
+            programOutput=resDict["program_output"],
+            programError=errorOutput,
         )
 
         await HistoryRepository.saveHistoryDetail(historyDetail)

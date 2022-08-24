@@ -16,7 +16,7 @@
 MyPage Top 一番最初のAPI
 
 ### バックエンド作成状況
-<font color="#00fa9a">実装</font>
+<font color="#87cefa">未実装</font>
 
 ### リクエスト
 
@@ -25,8 +25,8 @@ MyPage Top 一番最初のAPI
 `/mypage/<userId>`
 
 #### メソッド
-- POST
-  - Get (Req/Res)
+- GET
+  
 
 #### リクエストヘッダー
 

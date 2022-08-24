@@ -214,6 +214,7 @@ def is_prime(n):
 
 
                     connectCount = await manager.setUser(request, ws, data_json["playerId"], data_json["name"], isMaster, data_json["language"])
+
                     if connectCount >= maxPlayer:
                         questionModel = await QuestionRepository.choiceQuestion(roomModel["isDemo"])
 

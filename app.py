@@ -53,17 +53,15 @@ async def executeTestCase(request):
 
 
 
-
-
 @app.websocket("/play/<room_id>")
 async def playGame(request,  ws, room_id):
     return await WsService.playGame(request,  ws, room_id)
 
 
 
-
+subprocess.call(["sh", "./init_db/db.sh"], shell=False)
 
 if __name__ == '__main__':
 
-    subprocess.call(["sh", "./init_db/db.sh"], shell=False)
+
     app.run(host='0.0.0.0', port=8099, auto_reload=True)

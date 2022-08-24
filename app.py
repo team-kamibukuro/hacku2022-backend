@@ -14,6 +14,7 @@ from services.ConsoleService import *
 
 app = Sanic("HackU2022-backend")
 app.config.CORS_ORIGINS = "http://localhost:3000"
+app.config.CORS_ORIGINS = "https://injection-game.vercel.app/"
 Extend(app)
 
 
@@ -64,5 +65,5 @@ async def playGame(request,  ws, room_id):
 
 if __name__ == '__main__':
 
-    # subprocess.call(["sh", "./init_db/db.sh"], shell=False)
-    app.run(host='0.0.0.0', port=8089, auto_reload=True)
+    subprocess.call(["sh", "./init_db/db.sh"], shell=False)
+    app.run(host='0.0.0.0', port=8099, auto_reload=True)

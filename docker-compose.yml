@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: hacku2022
       POSTGRES_DB: hack-u-2022
     volumes:
-      - ./db/psgl:/var/lib/postgresql/data
+      - ./init_db/psgl:/var/lib/postgresql/data
   hack-u-backend:
     build: .
     container_name: 'hack-u-backend'

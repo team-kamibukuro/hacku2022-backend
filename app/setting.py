@@ -5,10 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 dbConnectUrl = "postgresql+asyncpg://{}:{}@{}:5432/{}".format(
-        os.environ.get("DB_USER_NAME"),
-        os.environ.get("DB_PASSWORD"),
-        os.environ.get("DB_HOST"),
-        os.environ.get("DB_NAME")
+        os.environ.get("POSTGRESQLCONNSTR_DB_USER_NAME"),
+        os.environ.get("POSTGRESQLCONNSTR_DB_PASSWORD"),
+        os.environ.get("POSTGRESQLCONNSTR_DB_HOST"),
+        os.environ.get("POSTGRESQLCONNSTR_DB_NAME")
 )
 
 print(dbConnectUrl)

@@ -33,6 +33,9 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Install postgresql
         run: sudo apt install postgresql -y
+        
+      - name: set DDL
+        run: PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -p 5432 -h ${{ secrets.DB_HOST }} -U hacku -d hack-u-2022 -f ./app/init_db/DDL.sql
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2

@@ -3,7 +3,6 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 
-
 dbConnectUrl = "postgresql+asyncpg://{}:{}@{}:5432/{}".format(
         os.environ.get("POSTGRESQLCONNSTR_DB_USER_NAME"),
         os.environ.get("POSTGRESQLCONNSTR_DB_PASSWORD"),

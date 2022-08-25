@@ -22,6 +22,7 @@ class History(Base):
     __table_args__ = {'extend_existing': True}
 
     id = Column('id', String(255), primary_key=True)
+    roomId = Column('roomId', String(255))
     usersId = Column('usersId', String(255))
     questionsId = Column('questionsId', String(255))
     language = Column('language', String(64))
@@ -31,12 +32,13 @@ class History(Base):
 
 
 
-    def __init__(self, usersId='', questionsId='', language="text",historiesTime='', historiesRanking=0):
+    def __init__(self, usersId='', questionsId='', language="text",historiesTime='', historiesRanking=0, roomId=''):
         tz = datetime.timezone(datetime.timedelta(hours=9))
 
         self.id = str(uuid.uuid4())
         self.usersId = usersId
         self.questionsId = questionsId
+        self.roomId = roomId
         self.language = language
         self.historiesTime = historiesTime
         self.historiesRanking = historiesRanking

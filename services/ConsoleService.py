@@ -60,16 +60,22 @@ print(is_prime(5))
 
         testCaseModel = await TestCaseRepository.getTestCase(self.json['questionId'])
 
+
         res = requests.post("https://wandbox.org/api/compile.json",
                                  json={"code": code, "compiler": compilers[language], "stdin": testCaseModel.testcasesInput},
                                  headers={"Content-type": "application/json"})
 
+
         resDict= res.json()
+
+        print(resDict)
 
 
         isError = True if resDict["status"] != '0' else False
 
-        errorOutput = resDict["compiler_error"] if resDict["compiler_error"] != '' else resDict["program_output"]
+
+
+        errorOutput = resDict["compiler_error"] if resDict["compiler_error"] != '' else resDict["program_error"]
 
         historyDetail = HistoryDetail(
             historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
@@ -87,7 +93,7 @@ print(is_prime(5))
         return response.json({
             "status": 200,
             "isError": isError,
-            "programError": resDict["program_error"],
+            "programError": errorOutput,
             "programOutput": resDict["program_output"]
         }, headers={
             "Access-Control-Expose-Headers": "*, Authorization",

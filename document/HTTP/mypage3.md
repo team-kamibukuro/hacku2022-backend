@@ -63,10 +63,11 @@ Match History Detail MyPage三番目のAPI
 | userName        | string | ユーザー名                     |
 | startTime       | string | 開始時間(yyyy/mm/dd hh:mm:ss) |
 | questionId      | string | 問題ID                      |
+| language        | string | プログラミング言語                 |
 | questionName    | string | 問題タイトル                    |
 | questionContext | string | 問題文                       |
 | gameResult      | array  | ゲームの対戦履歴(上から順位高め)         |
-| histories       | array  | コード履歴                     |
+| histories       | array  | コード履歴(古いものから先)            |
 
 
 #### gameResult配列の中のオブジェクト
@@ -94,14 +95,6 @@ Match History Detail MyPage三番目のAPI
 | testCaseClearTotal    | int     | テストケースがクリアした数                 |
 
 
-  "isExecuteTest" boolean,
-  "isProgramError" boolean,
-  "programOutput" text,
-  "programError" text,
-  "testCaseTotal" int,
-  "testCaseClearTotal" int,
-
-
 #### レスポンスサンプル
 
 ```JSON
@@ -112,6 +105,7 @@ Match History Detail MyPage三番目のAPI
   "startTime": "2022/08/26 14:56:41",
   "questionId": "Q_03",
   "questionName": "暗号解読",
+  "language": "java",
   "questionContext": "問題文-----問題文-----",
   "gameResult": [
     {
@@ -135,16 +129,16 @@ Match History Detail MyPage三番目のAPI
   ],
   "histories": [
     {
-      "historyId": "hd-004",
-      "debugTime": "2022/08/26 15:07:14",
-      "code": "print(\"Hello\")",
-      "isExecuteTest": false,
+      "historyId": "hd-012",
+      "debugTime": "2022/08/26 15:16:41",
+      "code": "print(\"Hello, Hello\")",
+      "isExecuteTest": true,
       "isProgramError": false,
-      "programOutput": "Hello",
+      "programOutput": "Hello, Hello",
       "programError": "",
-      "isClearTestCases": false,
-      "testCaseTotal": 0,
-      "testCaseClearTotal": 0
+      "isClearTestCases": true,
+      "testCaseTotal": 5,
+      "testCaseClearTotal": 5
     },
     {
       "historyId": "hd-006",
@@ -157,18 +151,18 @@ Match History Detail MyPage三番目のAPI
       "isClearTestCases": false,
       "testCaseTotal": 0,
       "testCaseClearTotal": 0
-    },
+    }, 
     {
-      "historyId": "hd-012",
-      "debugTime": "2022/08/26 15:16:41",
-      "code": "print(\"Hello, Hello\")",
-      "isExecuteTest": true,
+      "historyId": "hd-004",
+      "debugTime": "2022/08/26 15:07:14",
+      "code": "print(\"Hello\")",
+      "isExecuteTest": false,
       "isProgramError": false,
-      "programOutput": "Hello, Hello",
+      "programOutput": "Hello",
       "programError": "",
-      "isClearTestCases": true,
-      "testCaseTotal": 5,
-      "testCaseClearTotal": 5
+      "isClearTestCases": false,
+      "testCaseTotal": 0,
+      "testCaseClearTotal": 0
     }
   ]
   

@@ -16,7 +16,7 @@
 Match History MyPage二番目のAPI
 
 ### バックエンド作成状況
-<font color="#87cefa">未実装</font>
+<font color="#00fa9a">実装</font>
 
 ### リクエスト
 

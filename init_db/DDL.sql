@@ -7,6 +7,8 @@ CREATE TABLE "users" (
   "usersName" text NOT NULL,
   "usersEmail" text NOT NULL,
   "usersPassword" text NOT NULL,
+  "rankBadge" int,
+  "usersScore" int,
   "createdAt" text
 );
 

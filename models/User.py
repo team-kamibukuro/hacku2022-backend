@@ -25,7 +25,10 @@ class User(Base):
     usersName = Column('usersName', String(255))
     usersEmail = Column('usersEmail', String(255))
     usersPassword = Column('usersPassword', String(255))
+    rankBadge = Column('rankBadge', Integer)
+    usersScore = Column('usersScore', Integer)
     createdAt = Column('createdAt', String(32))
+
 
     def __init__(self, usersName='', usersEmail='', usersPassword=''):
         tDelta = datetime.timedelta(hours=9)
@@ -35,9 +38,11 @@ class User(Base):
         self.usersName = usersName
         self.usersEmail = usersEmail
         self.usersPassword = usersPassword
+        self.rankBadge = 6
+        self.usersScore = 0
         self.createdAt = str(datetime.datetime.now(JST))
 
-    def as_dict(self):
+    def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def asLoginDict(self):

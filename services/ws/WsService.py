@@ -12,6 +12,7 @@ import pprint
 import datetime
 from models.Question import *
 from repository.HistoryRepository import *
+from repository.UserRepository import *
 from models.History import *
 
 from sanic import response
@@ -230,6 +231,8 @@ def is_prime(n):
                             await HistoryRepository.saveHistory(history)
 
 
+
+
                         await manager.broadcast(json.dumps(
                             {
                                 "event": "READY",
@@ -298,10 +301,14 @@ def is_prime(n):
                                 tmpRank = sortedFinishedUser["rank"]
                                 tmpTime = sortedFinishedUser["time"]
 
+                            score = len(sortedFinishedUsers) - (sortedFinishedUser["rank"] - 1)
+
                             history = manager.historyModels[sortedFinishedUser["playerId"]]
                             history.historiesRanking = sortedFinishedUser["rank"]
                             history.historiesTime = sortedFinishedUser["time"]
                             await HistoryRepository.saveHistory(history)
+
+                            await UserRepository.updateScore(sortedFinishedUser["playerId"], score)
 
                         await manager.broadcast(json.dumps({
                             "event": "RANKING",

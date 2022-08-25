@@ -55,8 +55,7 @@ print(is_prime(5))
         if verifyTokenResult['status'] != 200:
             return response.json(verifyTokenResult, status=400)
 
-
-        # code = self.json['code']
+        code = self.json['code']
         language = self.json['language']
 
         testCaseModel = await TestCaseRepository.getTestCase(self.json['questionId'])

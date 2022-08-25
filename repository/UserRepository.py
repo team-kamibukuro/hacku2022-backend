@@ -20,6 +20,10 @@ class UserRepository():
 
             return False if int(len(mailCount.all())) == 0 else True
 
+    async def updateScore(userId, score):
+        async with async_session() as session:
+            print(score)
+
 
     async def selectLogin(userEmail, userPassword):
         async with async_session() as session:

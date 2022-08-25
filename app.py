@@ -51,6 +51,18 @@ async def executeConsole(request):
 async def executeTestCase(request):
     return await ConsoleService.getTestCaseResult(request)
 
+@app.get("/mypage/<userId>")
+async def executeTestCase(request, userId):
+    return await ConsoleService.getTestCaseResult(request, userId)
+
+@app.get("/match-history/<userId>")
+async def executeTestCase(request, userId):
+    return await ConsoleService.getTestCaseResult(request, userId)
+
+@app.get("/match-history/<userId>/<roomId>")
+async def executeTestCase(request, userId, roomId):
+    return await ConsoleService.getTestCaseResult(request, userId, roomId)
+
 
 
 @app.websocket("/play/<room_id>")

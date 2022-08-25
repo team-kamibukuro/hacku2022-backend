@@ -61,6 +61,8 @@ Match History Detail MyPage三番目のAPI
 | status          | int    | レスポンスステータス                |
 | userId          | string | ユーザーID                    |
 | userName        | string | ユーザー名                     |
+| roomId          | string | ルームID                     |
+| roomName        | string | ルーム名                      |
 | startTime       | string | 開始時間(yyyy/mm/dd hh:mm:ss) |
 | questionId      | string | 問題ID                      |
 | language        | string | プログラミング言語                 |
@@ -102,6 +104,8 @@ Match History Detail MyPage三番目のAPI
   "status": 200,
   "userId": "id-001",
   "userName": "パオパオ",
+  "roomId": "uuid-00001",
+  "roomName": "プログラミング・クラブ",
   "startTime": "2022/08/26 14:56:41",
   "questionId": "Q_03",
   "questionName": "暗号解読",

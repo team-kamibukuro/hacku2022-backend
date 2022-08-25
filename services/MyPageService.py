@@ -65,7 +65,7 @@ class MyPageService:
 
         matchHistory = await MyPageRepository.getMatchHistoryDetail(userId, roomId)
 
-        return response.json({"test": "ok"}, headers={
+        return response.json(matchHistory, headers={
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })

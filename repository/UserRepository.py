@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import sessionmaker
 from setting import async_session, bind
 from models.User import *
+from sqlalchemy.sql import text
 
 
 class UserRepository():
@@ -22,7 +23,28 @@ class UserRepository():
 
     async def updateScore(userId, score):
         async with async_session() as session:
-            print(score)
+
+            q_score = text(f"""
+                update users 
+                set "usersScore" = "usersScore" + ({score} * 1000)
+                where "id" = '{userId}'
+            """)
+            q_badge = text(f"""
+                update users 
+                    set "rankBadge" = case
+                        when "usersScore" <= 5000 then 6
+                        when "usersScore" <= 10000 then 5
+                        when "usersScore" <= 15000 then 4
+                        when "usersScore" <= 20000 then 3
+                        when "usersScore" <= 29999 then 2
+                        else 1
+                    end
+                    where "id" = '{userId}'
+            """)
+            await session.execute(q_score)
+            await session.execute(q_badge)
+
+            await session.commit()
 
 
     async def selectLogin(userEmail, userPassword):

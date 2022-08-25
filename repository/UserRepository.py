@@ -21,6 +21,13 @@ class UserRepository():
 
             return False if int(len(mailCount.all())) == 0 else True
 
+    async def selectUserId(userId):
+        async with async_session() as session:
+            q = select(User).where(User.id == userId)
+            result = await (session.execute(q))
+            userModel = result.scalars().first().asDict()
+            return userModel
+
     async def updateScore(userId, score):
         async with async_session() as session:
 

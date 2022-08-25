@@ -8,6 +8,7 @@ from services.UserService import *
 from services.RoomService import *
 from services.ws.WsService import *
 from services.ConsoleService import *
+from services.MyPageService import *
 
 
 
@@ -53,15 +54,15 @@ async def executeTestCase(request):
 
 @app.get("/mypage/<userId>")
 async def executeTestCase(request, userId):
-    return await ConsoleService.getTestCaseResult(request, userId)
+    return await MyPageService.getMyPage(request, userId)
 
 @app.get("/match-history/<userId>")
 async def executeTestCase(request, userId):
-    return await ConsoleService.getTestCaseResult(request, userId)
+    return await MyPageService.getMatchHistory(request, userId)
 
 @app.get("/match-history/<userId>/<roomId>")
 async def executeTestCase(request, userId, roomId):
-    return await ConsoleService.getTestCaseResult(request, userId, roomId)
+    return await MyPageService.getMatchHistoryDetail(request, userId, roomId)
 
 
 

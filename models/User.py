@@ -42,7 +42,7 @@ class User(Base):
         self.usersScore = 0
         self.createdAt = str(datetime.datetime.now(JST))
 
-    def as_dict(self):
+    def asDict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def asLoginDict(self):

@@ -4,12 +4,12 @@ from setting import async_session, bind
 from models.User import *
 from models.History import *
 from models.Room import *
+from datetime import datetime as dt
 from sqlalchemy.sql import text
 
 
 class MyPageRepository():
 
-    # entity = User
 
     async def getMatchHistory(userId):
         async with async_session() as session:
@@ -33,7 +33,7 @@ class MyPageRepository():
                 rooms.append({
                     "roomId": historyWithRoom[0],
                     "roomName": historyWithRoom[1],
-                    "startTime": historyWithRoom[2],
+                    "startTime": historyWithRoom[2].split('.')[0][:-3],
                     "playerCount": playerCount,
                     "players": players
                 })
@@ -44,17 +44,24 @@ class MyPageRepository():
                 "rooms": rooms
             }
 
-
-    async def checkEmail(userEmail):
+    async def getMatchHistoryDetail(userId, roomId):
         async with async_session() as session:
-            q = select(User).where(User.usersEmail == userEmail)
-            mailCount = await (session.execute(q))
+            q_room = select(Room.id, Room.roomName, History.createdAt).join(Room, History.roomId == Room.id, isouter=True).where(History.usersId == userId)
+            historyWithRooms = await session.execute(q_room)
 
-            return False if int(len(mailCount.all())) == 0 else True
 
-    async def selectUserId(userId):
-        async with async_session() as session:
-            q = select(User).where(User.id == userId)
-            result = await (session.execute(q))
-            userModel = result.scalars().first().asDict()
-            return userModel
+
+
+            return {
+                "status": 200,
+                "userId": "id-001",
+                "userName": "パオパオ",
+                "startTime": "2022/08/26 14:56:41",
+                "questionId": "Q_03",
+                "questionName": "暗号解読",
+                "language": "java",
+                "questionContext": "問題文-----問題文-----",
+            }
+
+
+

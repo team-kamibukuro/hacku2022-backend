@@ -14,6 +14,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "questions_histories" (
   "id" text PRIMARY KEY,
+  "roomId" text,
   "usersId" text,
   "questionsId" text,
   "language" text,

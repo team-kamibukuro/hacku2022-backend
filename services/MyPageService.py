@@ -6,6 +6,7 @@ from repository.RoomRepository import *
 from services.ws.ConnectionManager import *
 from services.ws.WsService import managers
 from repository.UserRepository import *
+from repository.MyPageRepository import *
 import json
 from sqlalchemy.ext.serializer import loads, dumps
 from setting import async_session
@@ -45,7 +46,11 @@ class MyPageService:
         if verifyTokenResult['status'] != 200:
             return response.json(verifyTokenResult, status=400)
 
-        return response.json({"test": "ok"}, headers={
+
+        matchHistory = await MyPageRepository.getMatchHistory(userId)
+
+
+        return response.json(matchHistory, headers={
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })

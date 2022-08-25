@@ -224,7 +224,8 @@ def is_prime(n):
                             history = History(
                                 questionsId=questionModel.id,
                                 language=data_json["language"],
-                                usersId=activeConnection["id"]
+                                usersId=activeConnection["id"],
+                                roomId=roomId
                             )
 
                             manager.historyModels[activeConnection["id"]] = history

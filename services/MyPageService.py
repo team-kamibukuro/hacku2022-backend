@@ -63,7 +63,9 @@ class MyPageService:
         if verifyTokenResult['status'] != 200:
             return response.json(verifyTokenResult, status=400)
 
-        return response.json({"test": "ok"}, headers={
+        matchHistory = await MyPageRepository.getMatchHistoryDetail(userId, roomId)
+
+        return response.json(matchHistory, headers={
             "Access-Control-Expose-Headers": "*, Authorization",
             "Authorization": authorization
         })

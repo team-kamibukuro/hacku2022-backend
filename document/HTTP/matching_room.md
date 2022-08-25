@@ -16,7 +16,7 @@
 マッチングルーム参加API
 
 ### バックエンド作成状況
-<font color="#87cefa">実装中</font>
+<font color="#00fa9a">実装</font>
 
 ### リクエスト
 

@@ -21,7 +21,7 @@ compilers = {
     "cpp": "gcc-12.1.0",
     "go": "go-1.16.3",
     "java": "openjdk-jdk-15.0.3+2",
-    "javascript": "node.js-16.14.0",
+    "javascript": "nodejs-16.14.0",
     "php": "php-8.0.3",
     "perl": "perl-5.34.0",
     "python": "cpython-3.8.9",
@@ -30,7 +30,7 @@ compilers = {
     "rust": "rust-1.51.0",
     "scala": "scala-2.13.5",
     "swift": "swift-5.3.3",
-    "typescript": "typeScript-4.2.4"
+    "typescript": "typescript-4.2.4"
 }
 
 

@@ -77,6 +77,11 @@ print(is_prime(5))
 
         errorOutput = resDict["compiler_error"] if resDict["compiler_error"] != '' else resDict["program_error"]
 
+
+
+        if isError and errorOutput == "":
+            errorOutput = resDict["program_output"]
+
         historyDetail = HistoryDetail(
             historiesId=managers[self.json['roomId']].historyModels[self.json['userId']].id,
             historyCode=code,
